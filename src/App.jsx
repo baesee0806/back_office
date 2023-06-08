@@ -1,7 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Main from './page/Main.jsx';
 
 const App = () => {
-  return <h1>Hello World!</h1>;
+  return (
+    <>
+    <Main />
+    </>
+  )
 };
 ReactDOM.render(<App />, document.getElementById('app'));
