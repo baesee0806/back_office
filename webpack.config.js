@@ -25,4 +25,11 @@ module.exports = {
       filename: 'index.html',
     }),
   ],
+  devServer: {
+    host: 'localhost',
+    port:3000,
+    hot: true,
+    open: true, // devServer 띄울때 new page open 여부
+    historyApiFallback: true, // router-dom 옵션
+    },
 };
