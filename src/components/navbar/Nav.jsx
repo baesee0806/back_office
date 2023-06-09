@@ -9,10 +9,10 @@ function Nav() {
         <Link to="/">
           <MenuButton>메인</MenuButton>
         </Link>
-        <Link>
+        <Link to="/board">
           <MenuButton>게시판</MenuButton>
         </Link>
-        <Link>
+        <Link to="/Schedule">
           <MenuButton>일정</MenuButton>
         </Link>
       </Menu>

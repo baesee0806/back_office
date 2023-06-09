@@ -3,7 +3,9 @@ import styled from 'styled-components';
 
 const Main = () => {
     return (
-   <MainContainer>메인 페이지</MainContainer>
+   <MainContainer>
+    <div></div>
+   </MainContainer>
     );
     }
 
