@@ -18,12 +18,8 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.svg$/,
-        use: [
-          {
-            loader: "file-loader",
-          },
-        ],
+        test: /\.png$/,
+        use: ["file-loader"],
       },
     ],
   },

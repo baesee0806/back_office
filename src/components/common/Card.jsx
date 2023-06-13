@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-// import thumbnail from "../../assets/images/thumbnail.png";
+import thumbnail from "../../assets/images/thumbnail.png";
 function Card() {
   return (
     <CardBox>
-      {/* <img src="../../assets/images/thumbnail.png" /> */}
+      <img src={thumbnail} />
       <div>제목</div>
       <div>내용</div>
     </CardBox>
