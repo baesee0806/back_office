@@ -4,9 +4,10 @@ import thumbnail from "../../assets/images/thumbnail.png";
 function Card() {
   return (
     <CardBox>
-      <img src={thumbnail} />
+      <ThumbnailImage src={thumbnail} />
       <div>제목</div>
       <div>내용</div>
+      <div>진행률 : </div>
     </CardBox>
   );
 }
@@ -16,5 +17,8 @@ const CardBox = styled.div`
   height: 300px;
   border: 1px solid black;
 `;
-
+const ThumbnailImage = styled.img`
+  width: 100%;
+  height: 230px;
+`;
 export default Card;
