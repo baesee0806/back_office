@@ -1,28 +1,39 @@
-const path = require('path');
+const path = require("path");
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   entry: {
-    'js/app': ['./src/App.jsx'],
+    "js/app": ["./src/App.jsx"],
   },
   output: {
-    path: path.resolve(__dirname, 'dist/'),
-    publicPath: '/',
+    path: path.resolve(__dirname, "dist/"),
+    publicPath: "/",
   },
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        use: ['babel-loader'],
+        use: ["babel-loader"],
         exclude: /node_modules/,
+      },
+      {
+        test: /\.png$/,
+        use: ["file-loader"],
       },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html',
-      filename: 'index.html',
+      template: "./src/index.html",
+      filename: "index.html",
     }),
   ],
+  devServer: {
+    host: "localhost",
+    port: 3000,
+    hot: true,
+    open: true, // devServer 띄울때 new page open 여부
+    historyApiFallback: true, // router-dom 옵션
+  },
 };
