@@ -1,7 +1,52 @@
 import React from "react";
+import styled from "styled-components";
 
 function Share() {
-  return <div>Share</div>;
+  return (
+    <div>
+      <Table>
+        <Thead>
+          <Th>번호</Th>
+          <Th>제목</Th>
+          <Th>작성자</Th>
+          <Th>등록일</Th>
+          <Th>조회</Th>
+        </Thead>
+        <Tbody>
+          <Tr>
+            <Td>1</Td>
+            <Td>리엑트 useEffect에 대해서</Td>
+            <Td>배성완</Td>
+            <Td>23.07.05</Td>
+            <Td>0</Td>
+          </Tr>
+        </Tbody>
+      </Table>
+    </div>
+  );
 }
+
+const Table = styled.table`
+  width: 100%;
+`;
+const Thead = styled.thead`
+  width: 100%;
+  height: 50px;
+`;
+const Th = styled.th`
+  border-bottom: 1px solid #000;
+`;
+const Tbody = styled.tbody`
+  width: 100%;
+  height: 35px;
+`;
+const Td = styled.td`
+  border-bottom: 1px solid #000;
+`;
+
+const Tr = styled.tr`
+  width: 100%;
+  text-align: center;
+`;
 
 export default Share;
