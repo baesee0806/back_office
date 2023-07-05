@@ -4,19 +4,35 @@ import { Link } from "react-router-dom";
 
 function Nav() {
   return (
+    // <Navbar>
+    //   <Menu>
+    //     <Link to="/">
+    //       <MenuButton>메인</MenuButton>
+    //     </Link>
+    //     <Link to="/share">
+    //       <MenuButton>정보 공유</MenuButton>
+    //     </Link>
+    //     <Link to="/messenger">
+    //       <MenuButton>메신저</MenuButton>
+    //     </Link>
+    //   </Menu>
+    //   <User>###님</User>
+    // </Navbar>
     <Navbar>
-      <Menu>
+      <ul>
         <Link to="/">
-          <MenuButton>메인</MenuButton>
+          <li>###님의 Back Office</li>
+        </Link>
+        <Link to="/github">
+          <li>Github</li>
         </Link>
         <Link to="/share">
-          <MenuButton>정보 공유</MenuButton>
+          <li>게시판</li>
         </Link>
         <Link to="/messenger">
-          <MenuButton>메신저</MenuButton>
+          <li>메신저</li>
         </Link>
-      </Menu>
-      <User>###님</User>
+      </ul>
     </Navbar>
   );
 }
@@ -24,25 +40,7 @@ function Nav() {
 export default Nav;
 
 const Navbar = styled.div`
-  height: 80px;
-  width: 100%;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  font-size: 1.5rem;
-
-  border-bottom: 1px solid black;
-`;
-const Menu = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-left: 10px;
-`;
-const MenuButton = styled.div`
-  margin-right: 20px;
-`;
-const User = styled.div`
-  margin-right: 10px;
+  height: 100%;
+  width: 300px;
+  background-color: green;
 `;

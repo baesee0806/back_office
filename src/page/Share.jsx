@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 function Share() {
   return (
-    <div>
+    <BoradLayout>
       <Table>
         <Thead>
           <Th>번호</Th>
@@ -22,10 +22,12 @@ function Share() {
           </Tr>
         </Tbody>
       </Table>
-    </div>
+    </BoradLayout>
   );
 }
-
+const BoradLayout = styled.div`
+  width: 100%;
+`;
 const Table = styled.table`
   width: 100%;
 `;
