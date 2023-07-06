@@ -32,7 +32,6 @@ const Navbar = styled.div`
   height: 100vh;
   width: 170px;
   background-color: #d9bde2;
-  padding: 0;
   margin-top: 0;
   position: fixed;
   z-index: 1;

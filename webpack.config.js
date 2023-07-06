@@ -9,8 +9,10 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist/"),
     publicPath: "/",
+    filename: "[name].js",
     sourceMapFilename: "[name].js.map",
   },
+  devtool: "source-map",
   module: {
     rules: [
       {
@@ -34,6 +36,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./src/index.html",
       filename: "index.html",
+    }),
+    new SourceMapDevToolPlugin({
+      filename: "[file].map",
     }),
   ],
   devServer: {

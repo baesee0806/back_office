@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Nav from "../components/navbar/Nav.jsx";
 
 function Board() {
   return (
@@ -29,6 +30,8 @@ function Board() {
 }
 const BoradLayout = styled.div`
   width: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 const Table = styled.table`
   width: 100%;
