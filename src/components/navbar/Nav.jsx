@@ -4,35 +4,24 @@ import { Link } from "react-router-dom";
 
 function Nav() {
   return (
-    // <Navbar>
-    //   <Menu>
-    //     <Link to="/">
-    //       <MenuButton>메인</MenuButton>
-    //     </Link>
-    //     <Link to="/share">
-    //       <MenuButton>정보 공유</MenuButton>
-    //     </Link>
-    //     <Link to="/messenger">
-    //       <MenuButton>메신저</MenuButton>
-    //     </Link>
-    //   </Menu>
-    //   <User>###님</User>
-    // </Navbar>
     <Navbar>
-      <ul>
-        <Link to="/">
-          <li>###님의 Back Office</li>
-        </Link>
-        <Link to="/github">
+      <MenuList>
+        <BackOfficeMenu to="/">
+          <li>
+            ###님의 <br />
+            Back Office
+          </li>
+        </BackOfficeMenu>
+        <GithubMenu to="/github">
           <li>Github</li>
-        </Link>
-        <Link to="/share">
+        </GithubMenu>
+        <BoardMenu to="/board">
           <li>게시판</li>
-        </Link>
-        <Link to="/messenger">
+        </BoardMenu>
+        <MessengerMenu to="/messenger">
           <li>메신저</li>
-        </Link>
-      </ul>
+        </MessengerMenu>
+      </MenuList>
     </Navbar>
   );
 }
@@ -40,7 +29,42 @@ function Nav() {
 export default Nav;
 
 const Navbar = styled.div`
+  height: 100vh;
+  width: 170px;
+  background-color: #d9bde2;
+  padding: 0;
+  margin-top: 0;
+  position: fixed;
+  z-index: 1;
+`;
+
+const MenuList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+
+  width: 170px;
   height: 100%;
-  width: 300px;
-  background-color: green;
+
+  text-align: center;
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  margin-left: -32px;
+`;
+const BackOfficeMenu = styled(Link)`
+  text-decoration: none;
+  margin-bottom: 2rem;
+  color: white;
+`;
+
+const GithubMenu = styled(Link)`
+  text-decoration: none;
+  margin-bottom: 2rem;
+`;
+const BoardMenu = styled(Link)`
+  text-decoration: none;
+  margin-bottom: 2rem;
+`;
+const MessengerMenu = styled(Link)`
+  text-decoration: none;
 `;

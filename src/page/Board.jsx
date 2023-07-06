@@ -1,16 +1,18 @@
 import React from "react";
 import styled from "styled-components";
 
-function Share() {
+function Board() {
   return (
     <BoradLayout>
       <Table>
         <Thead>
-          <Th>번호</Th>
-          <Th>제목</Th>
-          <Th>작성자</Th>
-          <Th>등록일</Th>
-          <Th>조회</Th>
+          <Tr>
+            <Th>번호</Th>
+            <Th>제목</Th>
+            <Th>작성자</Th>
+            <Th>등록일</Th>
+            <Th>조회</Th>
+          </Tr>
         </Thead>
         <Tbody>
           <Tr>
@@ -51,4 +53,4 @@ const Tr = styled.tr`
   text-align: center;
 `;
 
-export default Share;
+export default Board;

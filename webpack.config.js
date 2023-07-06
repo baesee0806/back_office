@@ -9,6 +9,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist/"),
     publicPath: "/",
+    sourceMapFilename: "[name].js.map",
   },
   module: {
     rules: [
@@ -20,6 +21,12 @@ module.exports = {
       {
         test: /\.png$/,
         use: ["file-loader"],
+      },
+      {
+        test: [/\.js$/, /\.ts?$/, /\.jsx?$/, /\.tsx?$/],
+        enforce: "pre",
+        exclude: /node_modules/,
+        use: ["source-map-loader"],
       },
     ],
   },
