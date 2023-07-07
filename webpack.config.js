@@ -37,6 +37,7 @@ module.exports = {
       template: "./src/index.html",
       filename: "index.html",
     }),
+    // 오류 원인
     // new SourceMapDevToolPlugin({
     //   filename: "[file].map",
     // }),

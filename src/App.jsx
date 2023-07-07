@@ -15,7 +15,7 @@ const Layout = styled.div`
   width: 100%;
 
   & > *:last-child {
-    margin-left: 180px;
+    margin-left: 250px;
     width: calc(100% - 170px);
   }
 `;

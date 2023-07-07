@@ -1,18 +1,19 @@
 import React from "react";
 import styled from "styled-components";
-import Card from "../components/common/Card.jsx";
-import ProjectChart from "../components/main/ProjectChart.jsx";
+import GitRepoCard from "../components/common/GitRepoCard.jsx";
+
 const Main = () => {
   return (
     <MainContainer>
-      <section>
-        <h1>메인 프로젝트 진행률</h1>
-        <ProjectChart />
-      </section>
-      <section>
-        <h1>진행중인 프로젝트</h1>
-        <Card />
-      </section>
+      <h1>최근 작업중인 Repo</h1>
+      <GitRepoCardContainer>
+        <GitRepoCard />
+        <GitRepoCard />
+      </GitRepoCardContainer>
+      <h1>###님의 Git commit</h1>
+      <div>
+        <img src="https://ghchart.rshah.org/baesee0806" />
+      </div>
     </MainContainer>
   );
 };
@@ -20,8 +21,15 @@ const Main = () => {
 export default Main;
 
 const MainContainer = styled.div`
-  height: 100vh;
-  background-color: #f5f5f5;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  margin-top: 90px;
+  margin-right: 10px;
+  padding: 0;
+`;
+
+const GitRepoCardContainer = styled.div`
+  display: flex;
 `;
