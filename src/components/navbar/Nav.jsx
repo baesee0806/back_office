@@ -5,18 +5,23 @@ import { Link } from "react-router-dom";
 function Nav() {
   return (
     <Navbar>
-      <Menu>
-        <Link to="/">
-          <MenuButton>메인</MenuButton>
-        </Link>
-        <Link to="/share">
-          <MenuButton>정보 공유</MenuButton>
-        </Link>
-        <Link to="/messenger">
-          <MenuButton>메신저</MenuButton>
-        </Link>
-      </Menu>
-      <User>###님</User>
+      <MenuList>
+        <BackOfficeMenu to="/">
+          <li>
+            ###님의 <br />
+            Back Office
+          </li>
+        </BackOfficeMenu>
+        <GithubMenu to="/github">
+          <li>Github</li>
+        </GithubMenu>
+        <BoardMenu to="/board">
+          <li>게시판</li>
+        </BoardMenu>
+        <MessengerMenu to="/messenger">
+          <li>메신저</li>
+        </MessengerMenu>
+      </MenuList>
     </Navbar>
   );
 }
@@ -24,25 +29,41 @@ function Nav() {
 export default Nav;
 
 const Navbar = styled.div`
-  height: 80px;
-  width: 100%;
+  height: 100vh;
+  width: 170px;
+  background-color: #d9bde2;
+  margin-top: 0;
+  position: fixed;
+  z-index: 1;
+`;
 
+const MenuList = styled.ul`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  list-style: none;
 
+  width: 170px;
+  height: 100%;
+
+  text-align: center;
   font-size: 1.5rem;
+  margin-top: 2rem;
+  margin-left: -32px;
+`;
+const BackOfficeMenu = styled(Link)`
+  text-decoration: none;
+  margin-bottom: 2rem;
+  color: white;
+`;
 
-  border-bottom: 1px solid black;
+const GithubMenu = styled(Link)`
+  text-decoration: none;
+  margin-bottom: 2rem;
 `;
-const Menu = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-left: 10px;
+const BoardMenu = styled(Link)`
+  text-decoration: none;
+  margin-bottom: 2rem;
 `;
-const MenuButton = styled.div`
-  margin-right: 20px;
-`;
-const User = styled.div`
-  margin-right: 10px;
+const MessengerMenu = styled(Link)`
+  text-decoration: none;
 `;

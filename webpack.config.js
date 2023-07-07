@@ -9,7 +9,10 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist/"),
     publicPath: "/",
+    filename: "[name].js",
+    sourceMapFilename: "[name].js.map",
   },
+  devtool: "source-map",
   module: {
     rules: [
       {
@@ -21,12 +24,21 @@ module.exports = {
         test: /\.png$/,
         use: ["file-loader"],
       },
+      {
+        test: [/\.js$/, /\.ts?$/, /\.jsx?$/, /\.tsx?$/],
+        enforce: "pre",
+        exclude: /node_modules/,
+        use: ["source-map-loader"],
+      },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: "./src/index.html",
       filename: "index.html",
+    }),
+    new SourceMapDevToolPlugin({
+      filename: "[file].map",
     }),
   ],
   devServer: {

@@ -1,16 +1,19 @@
 import React from "react";
 import styled from "styled-components";
+import Nav from "../components/navbar/Nav.jsx";
 
-function Share() {
+function Board() {
   return (
-    <div>
+    <BoradLayout>
       <Table>
         <Thead>
-          <Th>번호</Th>
-          <Th>제목</Th>
-          <Th>작성자</Th>
-          <Th>등록일</Th>
-          <Th>조회</Th>
+          <Tr>
+            <Th>번호</Th>
+            <Th>제목</Th>
+            <Th>작성자</Th>
+            <Th>등록일</Th>
+            <Th>조회</Th>
+          </Tr>
         </Thead>
         <Tbody>
           <Tr>
@@ -22,10 +25,14 @@ function Share() {
           </Tr>
         </Tbody>
       </Table>
-    </div>
+    </BoradLayout>
   );
 }
-
+const BoradLayout = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
 const Table = styled.table`
   width: 100%;
 `;
@@ -49,4 +56,4 @@ const Tr = styled.tr`
   text-align: center;
 `;
 
-export default Share;
+export default Board;

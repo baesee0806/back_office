@@ -21,4 +21,7 @@ export default Main;
 
 const MainContainer = styled.div`
   height: 100vh;
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
 `;
