@@ -8,11 +8,10 @@ const Main = () => {
       <h1>최근 작업중인 Repo</h1>
       <GitRepoCardContainer>
         <GitRepoCard />
-        <GitRepoCard />
       </GitRepoCardContainer>
       <h1>###님의 Git commit</h1>
       <div>
-        <img src="https://ghchart.rshah.org/baesee0806" />
+        <GitCommit src="https://ghchart.rshah.org/baesee0806" />
       </div>
     </MainContainer>
   );
@@ -30,6 +29,8 @@ const MainContainer = styled.div`
   padding: 0;
 `;
 
-const GitRepoCardContainer = styled.div`
-  display: flex;
+const GitRepoCardContainer = styled.div``;
+
+const GitCommit = styled.img`
+  width: 85%;
 `;

@@ -48,10 +48,6 @@ const CardLayout = styled.div`
   width: 500px;
   height: 226px;
 
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  align-items: center;
   margin-right: 114px;
   border: 1px solid black;
 `;
