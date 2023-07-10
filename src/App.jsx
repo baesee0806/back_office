@@ -7,6 +7,7 @@ import Messenger from "./page/Messenger.jsx";
 import Board from "./page/Board.jsx";
 import Nav from "./components/navbar/Nav.jsx";
 import Login from "./page/login.jsx";
+import SignIn from "./page/SignIn.jsx";
 
 const Layout = styled.div`
   margin-left: -8px;
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/board" element={<Board />} />
           <Route path="/messenger" element={<Messenger />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signin" element={<SignIn />} />
         </Routes>
       </Layout>
     </BrowserRouter>

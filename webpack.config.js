@@ -1,7 +1,7 @@
 const path = require("path");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-
+const webpack = require("webpack");
 module.exports = {
   entry: {
     "js/app": ["./src/App.jsx"],
@@ -36,6 +36,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./src/index.html",
       filename: "index.html",
+    }),
+    new webpack.ProvidePlugin({
+      process: "process/browser.js",
     }),
     // 오류 원인
     // new SourceMapDevToolPlugin({
