@@ -17,6 +17,7 @@ const App = () => {
       setInit(true);
     });
   }, []);
+  console.log(auth.currentUser?.uid);
   return (
     <BrowserRouter>
       {init ? <AppRouter isLoggedIn={isLoggedIn} /> : "Loading..."}

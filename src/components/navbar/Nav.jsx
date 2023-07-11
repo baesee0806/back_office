@@ -1,8 +1,18 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
+import { getAuth, signOut } from "firebase/auth";
 function Nav() {
+  const auth = getAuth();
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        alert("로그아웃 성공");
+      })
+      .catch((err) => {
+        alert("로그아웃 실패");
+      });
+  };
   return (
     <Navbar>
       <MenuList>
@@ -18,6 +28,9 @@ function Nav() {
         <MessengerMenu to="/messenger">
           <li>메신저</li>
         </MessengerMenu>
+        <div onClick={handleLogout}>
+          <li>로그아웃</li>
+        </div>
       </MenuList>
     </Navbar>
   );
