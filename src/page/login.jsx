@@ -3,10 +3,11 @@ import { useState } from "react";
 import { authService } from "../apis/firebaseService.js";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const navigate = useNavigate();
   const handleSubmit = async () => {
     signInWithEmailAndPassword(authService, email, password)
       .then(() => {
@@ -46,7 +47,13 @@ function Login() {
         </EmailPasswordfindBox>
 
         <LoginButton onClick={handleSubmit}>로그인</LoginButton>
-        <SignupButton>회원가입</SignupButton>
+        <SignupButton
+          onClick={() => {
+            navigate("/signin");
+          }}
+        >
+          회원가입
+        </SignupButton>
       </LoginBox>
     </LoginContainer>
   );
