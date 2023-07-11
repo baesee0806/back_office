@@ -1,16 +1,23 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
+import { getAuth, signOut } from "firebase/auth";
 function Nav() {
+  const auth = getAuth();
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        alert("로그아웃 성공");
+      })
+      .catch((err) => {
+        alert("로그아웃 실패");
+      });
+  };
   return (
     <Navbar>
       <MenuList>
         <BackOfficeMenu to="/">
-          <li>
-            ###님의 <br />
-            Back Office
-          </li>
+          <li>###님의 Back Office</li>
         </BackOfficeMenu>
         <GithubMenu to="/github">
           <li>Github</li>
@@ -21,6 +28,9 @@ function Nav() {
         <MessengerMenu to="/messenger">
           <li>메신저</li>
         </MessengerMenu>
+        <div onClick={handleLogout}>
+          <li>로그아웃</li>
+        </div>
       </MenuList>
     </Navbar>
   );
@@ -29,41 +39,33 @@ function Nav() {
 export default Nav;
 
 const Navbar = styled.div`
-  height: 100vh;
-  width: 170px;
+  display: flex;
+  justify-content: space-around;
   background-color: #d9bde2;
-  margin-top: 0;
-  position: fixed;
   z-index: 1;
 `;
 
 const MenuList = styled.ul`
   display: flex;
-  flex-direction: column;
-  list-style: none;
-
-  width: 170px;
-  height: 100%;
-
-  text-align: center;
+  width: 100%;
   font-size: 1.5rem;
-  margin-top: 2rem;
-  margin-left: -32px;
 `;
 const BackOfficeMenu = styled(Link)`
+  width: 200px;
   text-decoration: none;
-  margin-bottom: 2rem;
   color: white;
+  margin-right: 30px;
 `;
 
 const GithubMenu = styled(Link)`
   text-decoration: none;
-  margin-bottom: 2rem;
+  margin-right: 30px;
 `;
 const BoardMenu = styled(Link)`
   text-decoration: none;
-  margin-bottom: 2rem;
+  margin-right: 30px;
 `;
 const MessengerMenu = styled(Link)`
   text-decoration: none;
+  margin-right: 30px;
 `;
