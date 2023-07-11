@@ -17,35 +17,151 @@ function Login() {
       .catch((err) => {});
   };
   return (
-    <>
-      <div>
-        <div>
-          <label>아이디</label>
-          <input
+    <LoginContainer>
+      <LoginBox>
+        <LoginTitle>로그인</LoginTitle>
+        <EmailBox>
+          <EmailInput
             type="text"
             value={email}
+            placeholder="이메일을 입력해주세요."
             onChange={(e) => {
               setEmail(e.target.value);
             }}
           />
-        </div>
-        <div>
-          <label>비밀번호</label>
-          <input
+        </EmailBox>
+        <PasswordBox>
+          <PasswordInput
             type="password"
             value={password}
+            placeholder="비밀번호를 입력해주세요."
             onChange={(e) => {
               setPassword(e.target.value);
             }}
           />
-        </div>
+        </PasswordBox>
+        <EmailPasswordfindBox>
+          <EmailFind>아이디 찾기 |</EmailFind>
+          <PasswordFind>비밀번호 찾기</PasswordFind>
+        </EmailPasswordfindBox>
 
-        <button onClick={handleSubmit}>로그인</button>
-      </div>
-    </>
+        <LoginButton onClick={handleSubmit}>로그인</LoginButton>
+        <SignupButton>회원가입</SignupButton>
+      </LoginBox>
+    </LoginContainer>
   );
 }
 
-const LoginContainer = styled.div``;
+const LoginContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  height: 100vh;
+`;
 
+const LoginBox = styled.div`
+  width: 650px;
+  height: 550px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #aea8f1;
+  border-radius: 5px;
+`;
+const LoginTitle = styled.div`
+  font-size: 30px;
+  margin-bottom: 40px;
+  font-weight: bold;
+  color: #191f28;
+`;
+
+const EmailBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+`;
+
+const EmailInput = styled.input`
+  font-size: 25px;
+  width: 500px;
+  height: 60px;
+  border-radius: 5px;
+  border: 2px solid #aea8f1;
+  &::placeholder {
+    color: #c4c4c4;
+    padding-left: 20px;
+  }
+  &:focus {
+    &::placeholder {
+      color: white;
+    }
+  }
+`;
+
+const PasswordBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+`;
+
+const PasswordInput = styled.input`
+  font-size: 25px;
+  width: 500px;
+  height: 60px;
+  border-radius: 5px;
+  border: 2px solid #aea8f1;
+  &::placeholder {
+    color: #c4c4c4;
+    padding-left: 20px;
+  }
+  &:focus {
+    &::placeholder {
+      color: white;
+    }
+  }
+`;
+
+const EmailPasswordfindBox = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 40px;
+`;
+
+const EmailFind = styled.div`
+  margin-right: 8px;
+`;
+const PasswordFind = styled.div``;
+
+const LoginButton = styled.button`
+  width: 500px;
+  height: 60px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 2px solid #aea8f1;
+  font-size: 25px;
+  font-weight: bold;
+  background-color: white;
+  color: #aea8f1;
+  &:hover {
+    background-color: #aea8f1;
+    color: white;
+  }
+`;
+const SignupButton = styled.button`
+  width: 500px;
+  height: 60px;
+  border-radius: 5px;
+  border: 2px solid #aea8f1;
+  font-size: 25px;
+  font-weight: bold;
+  background-color: white;
+  color: #aea8f1;
+  &:hover {
+    background-color: #aea8f1;
+    color: white;
+  }
+`;
 export default Login;
