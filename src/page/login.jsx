@@ -1,18 +1,21 @@
 import React from "react";
 import { useState } from "react";
+import { authService } from "../apis/firebaseService.js";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import styled from "styled-components";
 function Login() {
-  const [user, setUser] = useState({
-    id: "",
-    password: "",
-    githubId: "",
-  });
-  const handleChangeUser = (e) => {
-    setUser({
-      ...user,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
+  const handleSubmit = async () => {
+    signInWithEmailAndPassword(authService, email, password)
+      .then(() => {
+        alert("로그인 성공");
+        setEmail("");
+        setPassword("");
+      })
+      .catch((err) => {});
+  };
   return (
     <>
       <div>
@@ -20,33 +23,29 @@ function Login() {
           <label>아이디</label>
           <input
             type="text"
-            name="id"
-            value={user.id}
-            onChange={handleChangeUser}
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
           />
         </div>
         <div>
           <label>비밀번호</label>
           <input
             type="password"
-            name="password"
-            value={user.password}
-            onChange={handleChangeUser}
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
           />
         </div>
-        <div>
-          <label>Github 아이디</label>
-          <input
-            type="text"
-            name="githubId"
-            value={user.githubId}
-            onChange={handleChangeUser}
-          />
-        </div>
-        <button>로그인</button>
+
+        <button onClick={handleSubmit}>로그인</button>
       </div>
     </>
   );
 }
+
+const LoginContainer = styled.div``;
 
 export default Login;

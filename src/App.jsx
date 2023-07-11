@@ -1,39 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import styled from "styled-components";
-import Main from "./page/Main.jsx";
-import Messenger from "./page/Messenger.jsx";
-import Board from "./page/Board.jsx";
-import Nav from "./components/navbar/Nav.jsx";
-import Login from "./page/login.jsx";
-import SignIn from "./page/SignIn.jsx";
-
-const Layout = styled.div`
-  margin-left: -8px;
-  margin-top: -8px;
-
-  display: flex;
-  width: 100%;
-
-  & > *:last-child {
-    margin-left: 250px;
-    width: calc(100% - 170px);
-  }
-`;
+import { BrowserRouter } from "react-router-dom";
+import { getAuth } from "firebase/auth";
+import AppRouter from "./share/AppRouter.js";
 const App = () => {
+  const auth = getAuth();
+  const [init, setInit] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+      setInit(true);
+    });
+  }, []);
   return (
     <BrowserRouter>
-      <Layout>
-        <Nav />
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/board" element={<Board />} />
-          <Route path="/messenger" element={<Messenger />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signin" element={<SignIn />} />
-        </Routes>
-      </Layout>
+      {init ? <AppRouter isLoggedIn={isLoggedIn} /> : "Loading..."}
     </BrowserRouter>
   );
 };
