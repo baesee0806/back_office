@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
-import { useUserData } from "../../apis/useUserData";
 function Nav() {
   const auth = getAuth();
-  const user = useUserData();
-  console.log(user);
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    if (!auth.currentUser) return;
+    setUser(auth.currentUser);
+  }, [auth.currentUser]);
   const handleLogout = () => {
     signOut(auth)
       .then(() => {

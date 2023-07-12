@@ -8,7 +8,6 @@ import {
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useUserData } from "../apis/useUserData.js";
 function SignIn() {
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
@@ -26,6 +25,7 @@ function SignIn() {
         displayName: registerName,
       }).then(() => {
         navigate("/");
+        window.location.reload();
       });
     } catch (error) {
       console.log(error);
