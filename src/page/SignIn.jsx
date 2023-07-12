@@ -1,13 +1,20 @@
 import React from "react";
 import { useState } from "react";
 import { authService } from "../apis/firebaseService.js";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  getAuth,
+} from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useUserData } from "../apis/useUserData.js";
 function SignIn() {
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
+  const [registerName, setRegisterName] = useState("");
   const navigate = useNavigate();
+  const auth = getAuth();
   const register = async () => {
     try {
       const user = await createUserWithEmailAndPassword(
@@ -15,8 +22,11 @@ function SignIn() {
         registerEmail,
         registerPassword
       );
-      console.log(user);
-      navigate("/");
+      updateProfile(auth.currentUser, {
+        displayName: registerName,
+      }).then(() => {
+        navigate("/");
+      });
     } catch (error) {
       console.log(error);
     }
@@ -28,7 +38,6 @@ function SignIn() {
         <EmailBox>
           <EmailInput
             type="text"
-            name="id"
             placeholder="이메일을 입력해주세요."
             value={registerEmail}
             onChange={(e) => {
@@ -39,7 +48,6 @@ function SignIn() {
         <PasswordBox>
           <PasswordInput
             type="password"
-            name="password"
             value={registerPassword}
             placeholder="비밀번호를 입력해주세요."
             onChange={(e) => {
@@ -47,6 +55,16 @@ function SignIn() {
             }}
           />
         </PasswordBox>
+        <NameBox>
+          <NameInput
+            type="text"
+            value={registerName}
+            placeholder="성함을 입력해주세요."
+            onChange={(e) => {
+              setRegisterName(e.target.value);
+            }}
+          />
+        </NameBox>
 
         <SignButton onClick={register}>회원가입</SignButton>
       </SignBox>
@@ -124,7 +142,28 @@ const PasswordInput = styled.input`
     }
   }
 `;
+const NameBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+`;
 
+const NameInput = styled.input`
+  font-size: 25px;
+  width: 500px;
+  height: 60px;
+  border-radius: 5px;
+  border: 2px solid #aea8f1;
+  &::placeholder {
+    color: #c4c4c4;
+    padding-left: 20px;
+  }
+  &:focus {
+    &::placeholder {
+      color: white;
+    }
+  }
+`;
 const SignButton = styled.button`
   width: 500px;
   height: 60px;
