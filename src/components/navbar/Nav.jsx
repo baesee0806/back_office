@@ -2,17 +2,16 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 function Nav() {
   const auth = getAuth();
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    if (!auth.currentUser) return;
-    setUser(auth.currentUser);
-  }, [auth.currentUser]);
+  const user = auth.currentUser;
+  const navigate = useNavigate();
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
         alert("로그아웃 성공");
+        navigate("/");
       })
       .catch((err) => {
         alert("로그아웃 실패");
@@ -51,7 +50,8 @@ export default Nav;
 const Navbar = styled.div`
   display: flex;
   justify-content: space-around;
-  background-color: #d9bde2;
+  border-bottom: 1px solid #c6c8ca;
+  background-color: #0c1222;
 `;
 
 const MenuList = styled.ul`
@@ -71,26 +71,31 @@ const MenuBox = styled.div`
 const BackOfficeMenu = styled(Link)`
   width: 400px;
   text-decoration: none;
-  color: white;
+  color: #c6c8ca;
   margin-right: 30px;
+  font-family: "Noto Sans KR", sans-serif;
 `;
 
 const GithubMenu = styled(Link)`
   text-decoration: none;
   margin-right: 30px;
-  color: white;
+  color: #c6c8ca;
+  font-family: "Noto Sans KR", sans-serif;
 `;
 const BoardMenu = styled(Link)`
   text-decoration: none;
   margin-right: 30px;
-  color: white;
+  color: #c6c8ca;
+  font-family: "Noto Sans KR", sans-serif;
 `;
 const MessengerMenu = styled(Link)`
   text-decoration: none;
   margin-right: 30px;
-  color: white;
+  color: #c6c8ca;
+  font-family: "Noto Sans KR", sans-serif;
 `;
 const LogoutMenu = styled.div`
   cursor: pointer;
-  color: white;
+  color: #c6c8ca;
+  font-family: "Noto Sans KR", sans-serif;
 `;
