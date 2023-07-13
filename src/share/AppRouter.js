@@ -6,6 +6,7 @@ import Board from "../page/Board.jsx";
 import Nav from "../components/navbar/Nav.jsx";
 import Login from "../page/login.jsx";
 import SignIn from "../page/SignIn.jsx";
+import Github from "../page/Github.jsx";
 function AppRouter({ isLoggedIn }) {
   return (
     <>
@@ -14,10 +15,9 @@ function AppRouter({ isLoggedIn }) {
           <Nav />
           <Routes>
             <Route path="/" element={<Main />} />
+            <Route path="/github" element={<Github />} />
             <Route path="/board" element={<Board />} />
             <Route path="/messenger" element={<Messenger />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signin" element={<SignIn />} />
           </Routes>
         </>
       ) : (

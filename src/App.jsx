@@ -16,7 +16,7 @@ const App = () => {
       }
       setInit(true);
     });
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <BrowserRouter>
