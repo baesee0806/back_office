@@ -2,6 +2,8 @@ const path = require("path");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
+const dotenv = require("dotenv");
+dotenv.config();
 module.exports = {
   entry: {
     "js/app": ["./src/App.jsx"],
@@ -9,12 +11,16 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist/"),
     publicPath: "/",
-    // filename: "[name].js",
+    filename: "[name].js",
     // sourceMapFilename: "[name].js.map",
   },
   devtool: "source-map",
   module: {
     rules: [
+      {
+        test: /\.css/, //css 파일에대한 정규 표현식
+        use: ["style-loader", "css-loader"], // 사용할 모듈 설정
+      },
       {
         test: /\.(js|jsx)$/,
         use: ["babel-loader"],
@@ -37,9 +43,14 @@ module.exports = {
       template: "./src/index.html",
       filename: "index.html",
     }),
-    new webpack.ProvidePlugin({
-      process: "process/browser.js",
-    }),
+    new webpack.EnvironmentPlugin([
+      "REACT_APP_FIREBASE_API_KEY",
+      "REACT_APP_FIREBASE_AUTH_DOMAIN",
+      "REACT_APP_FIREBASE_PROJECT_ID",
+      "REACT_APP_FIREBASE_STORAGE_BUCKET",
+      "REACT_APP_FIREBASE_MESSAGING_SENDER_ID",
+      "REACT_APP_FIREBASE_APP_ID",
+    ]),
     // 오류 원인
     // new SourceMapDevToolPlugin({
     //   filename: "[file].map",
