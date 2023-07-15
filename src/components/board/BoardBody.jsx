@@ -1,14 +1,16 @@
 import React from "react";
 import styled from "styled-components";
-function BoardBody() {
+
+function BoardBody(props) {
+  console.log(props);
   return (
     <Tbody>
       <Tr>
-        <Td>1</Td>
-        <Td>리엑트 useEffect에 대해서</Td>
-        <Td>배성완</Td>
-        <Td>23.07.05</Td>
-        <Td>0</Td>
+        <Td>{"##"}</Td>
+        <Td>{props.item.title}</Td>
+        <Td>{props.item.userName}</Td>
+        <Td>{"***"}</Td>
+        <Td>{"##"}</Td>
       </Tr>
     </Tbody>
   );
@@ -24,4 +26,4 @@ const Tr = styled.tr`
 const Td = styled.td`
   border-bottom: 1px solid #000;
 `;
-export default BoardBody;
+export default React.memo(BoardBody);
