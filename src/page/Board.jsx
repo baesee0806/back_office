@@ -1,16 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import BoardHeader from "../components/board/BoardHeader.jsx";
 import BoardBody from "../components/board/BoardBody.jsx";
 import BoardCreateBTN from "../components/board/BoardCreateBTN.jsx";
+import { firestore } from "../apis/firebaseService.js";
+import { collection, getDocs, onSnapshot } from "firebase/firestore";
 
 function Board() {
+  const [data, setData] = useState([]);
+  const firebaseGetBoardData = () => {
+    onSnapshot(collection(firestore, "board"), (snapshot) => {
+      const temp = [];
+      snapshot.forEach((doc) => {
+        temp.push(doc.data());
+      });
+      setData(temp);
+    });
+  };
+  useEffect(() => {
+    firebaseGetBoardData();
+  }, []);
   return (
     <>
       <BoradLayout>
         <Table>
           <BoardHeader />
-          <BoardBody />
+          {data.map((item, value) => {
+            return <BoardBody item={item} key={value} />;
+          })}
         </Table>
       </BoradLayout>
       <BoardCreateBTN />
