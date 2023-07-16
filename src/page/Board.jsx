@@ -4,7 +4,7 @@ import BoardHeader from "../components/board/BoardHeader.jsx";
 import BoardBody from "../components/board/BoardBody.jsx";
 import BoardCreateBTN from "../components/board/BoardCreateBTN.jsx";
 import { firestore } from "../apis/firebaseService.js";
-import { collection, getDocs, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 
 function Board() {
   const [data, setData] = useState([]);
@@ -20,6 +20,7 @@ function Board() {
   useEffect(() => {
     firebaseGetBoardData();
   }, []);
+  console.log(data);
   return (
     <>
       <BoradLayout>
@@ -44,4 +45,4 @@ const Table = styled.table`
   width: 100%;
 `;
 
-export default Board;
+export default React.memo(Board);
