@@ -42,7 +42,7 @@ function GitRepoCard() {
   );
 }
 
-export default GitRepoCard;
+export default React.memo(GitRepoCard);
 
 const CardLayout = styled.div`
   width: 500px;
