@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Draft_Editor from "../components/board/Draft_Editor.jsx";
-import { EditorState } from "draft-js";
+import { EditorState, convertToRaw } from "draft-js";
+import draftToHtml from "draftjs-to-html";
 import styled from "styled-components";
 import { firestore } from "../apis/firebaseService.js";
 import { getAuth } from "firebase/auth";
@@ -10,13 +11,14 @@ function BoardCreate() {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const htmlEditor = draftToHtml(convertToRaw(editorState.getCurrentContent()));
 
   const AddData = async () => {
     const uid = getAuth().currentUser.uid;
     const userName = getAuth().currentUser.displayName;
     const docRef = await addDoc(collection(firestore, "board"), {
       title: title,
-      content: editorState.getCurrentContent().getPlainText(),
+      content: htmlEditor,
       uid: uid,
       userName: userName,
       createdAt: new Date(),
