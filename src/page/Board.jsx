@@ -8,26 +8,29 @@ import { collection, onSnapshot } from "firebase/firestore";
 
 function Board() {
   const [data, setData] = useState([]);
+
   const firebaseGetBoardData = () => {
     onSnapshot(collection(firestore, "board"), (snapshot) => {
       const temp = [];
+
       snapshot.forEach((doc) => {
-        temp.push(doc.data());
+        temp.push(doc);
       });
       setData(temp);
     });
   };
+
   useEffect(() => {
     firebaseGetBoardData();
   }, []);
-  console.log(data);
+
   return (
     <>
       <BoradLayout>
         <Table>
           <BoardHeader />
-          {data.map((item, value) => {
-            return <BoardBody item={item} key={value} />;
+          {data.map((item) => {
+            return <BoardBody item={item} key={item.id} docRef={item.id} />;
           })}
         </Table>
       </BoradLayout>

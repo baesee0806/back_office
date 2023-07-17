@@ -1,13 +1,21 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 function BoardBody(props) {
+  const navigate = useNavigate();
+  const data = props.item.data();
+  const docRef = props.docRef;
   return (
-    <Tbody>
+    <Tbody
+      onClick={() => {
+        navigate(`/board/${docRef}`);
+      }}
+    >
       <Tr>
         <Td>{"##"}</Td>
-        <Td>{props.item.title}</Td>
-        <Td>{props.item.userName}</Td>
+        <Td>{data.title}</Td>
+        <Td>{data.userName}</Td>
         <Td>{"***"}</Td>
         <Td>{"##"}</Td>
       </Tr>
