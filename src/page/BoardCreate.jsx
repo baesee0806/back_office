@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from "react";
-import Draft_Editor from "../components/board/Draft_Editor.jsx";
-import { EditorState, convertToRaw } from "draft-js";
-import draftToHtml from "draftjs-to-html";
 import styled from "styled-components";
 import { firestore } from "../apis/firebaseService.js";
 import { getAuth } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import ToastUiEditor from "../components/board/create/ToastUiEditor.jsx";
 function BoardCreate() {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const htmlEditor = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+  const [editorState, setEditorState] = useState("");
 
   const AddData = async () => {
     const uid = getAuth().currentUser.uid;
     const userName = getAuth().currentUser.displayName;
     const docRef = await addDoc(collection(firestore, "board"), {
       title: title,
-      content: htmlEditor,
+      content: editorState,
       uid: uid,
       userName: userName,
       createdAt: new Date(),
@@ -29,10 +26,7 @@ function BoardCreate() {
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
   };
-  const onEditorStateChange = (editorState) => {
-    // editorState에 값 설정
-    setEditorState(editorState);
-  };
+
   return (
     <BoardCreateContainer>
       <TitleBox>
@@ -46,9 +40,9 @@ function BoardCreate() {
         />
       </TitleBox>
       <div>
-        <Draft_Editor
+        <ToastUiEditor
           editorState={editorState}
-          onEditorStateChange={onEditorStateChange}
+          setEditorState={setEditorState}
         />
       </div>
       <CreateBTNBox>
