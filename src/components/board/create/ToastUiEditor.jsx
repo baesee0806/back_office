@@ -6,8 +6,7 @@ import "@toast-ui/editor/dist/toastui-editor.css";
 import styled from "styled-components";
 
 function ToastUiEditor(props) {
-  const textRef = React.createRef();
-  console.log(textRef);
+  const textRef = React.useRef();
   const handleChangeInput = () => {
     props.setEditorState(textRef.current.getInstance().getMarkdown());
   };

@@ -16,7 +16,7 @@ function DetailBoardBTN(props) {
       navigate("/board");
     }
     if (text === "수정하기") {
-      console.log("수정하기");
+      navigate(`/board/update/${props.btnControlData.ref.id}`);
     }
   };
   return (
