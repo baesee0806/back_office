@@ -7,10 +7,15 @@ import { getAuth } from "firebase/auth";
 import DetailHeader from "../components/board/dtail/DetailHeader.jsx";
 import DetailBody from "../components/board/dtail/DetailBody.jsx";
 import DetailComment from "../components/board/dtail/DetailComment.jsx";
+import DetailBoardBTN from "../components/board/dtail/DetailBoardBTN.jsx";
 function BoardDtail() {
   const ref = useParams();
   const userId = getAuth().currentUser.uid;
   const [detailBoardData, setDetailBoardData] = useState([]);
+  const btnControlData = {
+    delete: { btnType: "삭제하기", ref },
+    update: { btnType: "수정하기", ref },
+  };
   const getDtailBoardData = async () => {
     const q = collection(firestore, "board");
     const querySnapshot = await onSnapshot(q, (querySnapshot) => {
@@ -27,17 +32,29 @@ function BoardDtail() {
 
   return (
     <div>
-      <DetailHeader Data={detailBoardData} key={detailBoardData.id} />
-      <DetailBody Data={detailBoardData} key={detailBoardData.id} />
-      <DetailComment />
+      <DetailHeader Data={detailBoardData} key={detailBoardData.btnType} />
+      <DetailBody Data={detailBoardData} key={detailBoardData.btnType} />
       {detailBoardData.uid === userId ? (
-        <div>
-          <button>삭제하기</button>
-          <button>수정하기</button>
-        </div>
+        <BtnBox>
+          <DetailBoardBTN
+            btnControlData={btnControlData.delete}
+            key={btnControlData.delete.btnType}
+          />
+          <DetailBoardBTN
+            btnControlData={btnControlData.update}
+            key={btnControlData.update.id}
+          />
+        </BtnBox>
       ) : null}
+      <DetailComment />
     </div>
   );
 }
 
+const BtnBox = styled.div`
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+`;
 export default BoardDtail;
