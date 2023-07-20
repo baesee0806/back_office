@@ -1,6 +1,6 @@
 import { firestore } from "../apis/firebaseService.js";
 import { collection, onSnapshot } from "firebase/firestore";
-// ref set
+
 export const useGetDetailBoardData = async (ref, setData) => {
   const q = collection(firestore, "board");
   const querySnapshot = await onSnapshot(q, (querySnapshot) => {
