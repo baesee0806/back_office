@@ -7,16 +7,26 @@ function BoardUpdate() {
   const ref = useParams();
   const [detailData, setDetailData] = useState([]);
   const [editorState, setEditorState] = useState("");
-  const textRef = React.useRef();
-  const content = detailData.content;
+  const [title, setTitle] = useState(detailData.title);
+
   useEffect(() => {
     useGetDetailBoardData(ref, setDetailData);
   }, []);
 
+  const handleChangeInput = (e) => {
+    setTitle(e.target.value);
+  };
+
   return (
     <div>
       <div>
-        <input type="text" />
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => {
+            handleChangeInput(e);
+          }}
+        />
       </div>
       <div>
         <UpdateToastUiEditor

@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Editor } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
 function UpdateToastUiEditor(props) {
+  const textRef = useRef();
   const handleChangeInput = () => {
     props.setEditorState(textRef.current.getInstance().getMarkdown());
   };
@@ -9,7 +10,7 @@ function UpdateToastUiEditor(props) {
   return (
     <div>
       <Editor
-        ref={props.textRef}
+        ref={textRef}
         initialValue={props.editorState} // 최초값 설정
         onChange={handleChangeInput} // 내용 변경 시 실행될 함수
         previewStyle="vertical" // 미리보기 스타일 지정
