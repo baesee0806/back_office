@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Editor } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
+import styled from "styled-components";
 function UpdateToastUiEditor(props) {
   const textRef = useRef();
   const handleChangeInput = () => {
@@ -8,7 +9,7 @@ function UpdateToastUiEditor(props) {
   };
   useEffect(() => {}, []);
   return (
-    <div>
+    <EditorBox>
       <Editor
         ref={textRef}
         initialValue={props.editorState} // 최초값 설정
@@ -25,8 +26,11 @@ function UpdateToastUiEditor(props) {
           ["code", "codeblock"],
         ]}
       />
-    </div>
+    </EditorBox>
   );
 }
-
+const EditorBox = styled.div`
+  width: 70%;
+  margin: 0 auto;
+`;
 export default UpdateToastUiEditor;
