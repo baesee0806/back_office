@@ -1,14 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetDetailBoardData } from "../../hooks/useGetDetailBoardData.js";
 import UpdateToastUiEditor from "../../components/board/update/UpdateToastUiEditor.jsx";
 import styled from "styled-components";
 import { firestore } from "../../apis/firebaseService.js";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, doc, updateDoc } from "firebase/firestore";
 function BoardUpdate() {
   useEffect(() => {
     getData().then((res) => {});
   }, []);
+  const navigate = useNavigate();
   const ref = useParams();
   const [editorState, setEditorState] = useState("");
   const [title, setTitle] = useState("");
@@ -23,6 +24,14 @@ function BoardUpdate() {
         }
       });
     });
+  };
+  const updateData = async () => {
+    const q = doc(firestore, "board", ref.id);
+    const querySnapshot = await updateDoc(q, {
+      title: title,
+      content: editorState,
+    });
+    navigate("/board");
   };
   const handleChangeInput = (e) => {
     setTitle(e.target.value);
@@ -50,8 +59,14 @@ function BoardUpdate() {
         </UpdateToastUiEditorBox>
       )}
       <UpdateBTNBox>
-        <button>수정하기</button>
-        <button>취소</button>
+        <UpdateBTN onClick={updateData}>수정하기</UpdateBTN>
+        <CancelBTN
+          onClick={() => {
+            navigate("/board");
+          }}
+        >
+          취소
+        </CancelBTN>
       </UpdateBTNBox>
     </div>
   );
@@ -76,6 +91,36 @@ const UpdateBTNBox = styled.div`
   width: 70%;
   margin: 15px auto 15px auto;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+`;
+const UpdateBTN = styled.button`
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 5px 10px;
+  background-color: white;
+  &:hover {
+    background-color: #0c1222;
+    color: white;
+    padding: 5px 10px;
+    transition: 0.5s;
+  }
+  margin-right: 10px;
+`;
+
+const CancelBTN = styled.button`
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 5px 10px;
+  background-color: white;
+  &:hover {
+    background-color: #0c1222;
+    color: white;
+    padding: 5px 10px;
+    transition: 0.5s;
+  }
 `;
 export default React.memo(BoardUpdate);
