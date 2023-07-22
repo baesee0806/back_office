@@ -4,10 +4,11 @@ import "@toast-ui/editor/dist/toastui-editor.css";
 import styled from "styled-components";
 function UpdateToastUiEditor(props) {
   const textRef = useRef();
+
   const handleChangeInput = () => {
     props.setEditorState(textRef.current.getInstance().getMarkdown());
   };
-  useEffect(() => {}, []);
+
   return (
     <EditorBox>
       <Editor

@@ -3,10 +3,12 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 import AppRouter from "./share/AppRouter.js";
+
 const App = () => {
   const auth = getAuth();
   const [init, setInit] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {

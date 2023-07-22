@@ -1,39 +1,54 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetDetailBoardData } from "../../hooks/useGetDetailBoardData.js";
 import UpdateToastUiEditor from "../../components/board/update/UpdateToastUiEditor.jsx";
 import styled from "styled-components";
+import { firestore } from "../../apis/firebaseService.js";
+import { collection, onSnapshot } from "firebase/firestore";
 function BoardUpdate() {
-  const ref = useParams();
-  const [detailData, setDetailData] = useState([]);
-  const [editorState, setEditorState] = useState("");
-  const [title, setTitle] = useState(detailData.title);
-
   useEffect(() => {
-    useGetDetailBoardData(ref, setDetailData);
+    getData().then((res) => {});
   }, []);
+  const ref = useParams();
+  const [editorState, setEditorState] = useState("");
+  const [title, setTitle] = useState("");
 
+  const getData = async () => {
+    const q = collection(firestore, "board");
+    const querySnapshot = await onSnapshot(q, (querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        if (doc.id === ref.id) {
+          setTitle(doc.data().title);
+          setEditorState(doc.data().content);
+        }
+      });
+    });
+  };
   const handleChangeInput = (e) => {
     setTitle(e.target.value);
   };
 
   return (
     <div>
-      <UpdateTitleBox>
-        <UpdateTitleInput
-          type="text"
-          value={title}
-          onChange={(e) => {
-            handleChangeInput(e);
-          }}
-        />
-      </UpdateTitleBox>
-      <UpdateToastUiEditorBox>
-        <UpdateToastUiEditor
-          editorState={editorState}
-          setEditorState={setEditorState}
-        />
-      </UpdateToastUiEditorBox>
+      {title && (
+        <UpdateTitleBox>
+          <UpdateTitleInput
+            type="text"
+            value={title}
+            onChange={(e) => {
+              handleChangeInput(e);
+            }}
+          />
+        </UpdateTitleBox>
+      )}
+      {editorState && (
+        <UpdateToastUiEditorBox>
+          <UpdateToastUiEditor
+            editorState={editorState}
+            setEditorState={setEditorState}
+          />
+        </UpdateToastUiEditorBox>
+      )}
       <UpdateBTNBox>
         <button>수정하기</button>
         <button>취소</button>
