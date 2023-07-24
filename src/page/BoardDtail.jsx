@@ -7,6 +7,7 @@ import DetailBody from "../components/board/dtail/DetailBody.jsx";
 import DetailComment from "../components/board/dtail/DetailComment.jsx";
 import DetailBoardBTN from "../components/board/dtail/DetailBoardBTN.jsx";
 import { useGetDetailBoardData } from "../hooks/useGetDetailBoardData.js";
+import CommentCreateBox from "../components/board/comment/CommentCreateBox.jsx";
 function BoardDtail() {
   const ref = useParams();
   const userId = getAuth().currentUser.uid;
@@ -15,11 +16,10 @@ function BoardDtail() {
     delete: { btnType: "삭제하기", ref },
     update: { btnType: "수정하기", ref },
   };
-
+  const [commentCreateModalState, setCommentCreateModalState] = useState(false);
   useEffect(() => {
     useGetDetailBoardData(ref, setDetailBoardData);
   }, []);
-
   return (
     <div>
       <DetailHeader Data={detailBoardData} key={detailBoardData.btnType} />
@@ -36,7 +36,12 @@ function BoardDtail() {
           />
         </BtnBox>
       ) : null}
-      <DetailComment docCreateId={detailBoardData.uid} />
+      {commentCreateModalState ? <CommentCreateBox /> : null}
+
+      <DetailComment
+        docCreateId={detailBoardData.uid}
+        setCommentCreateModalState={setCommentCreateModalState}
+      />
     </div>
   );
 }

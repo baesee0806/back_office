@@ -25,6 +25,7 @@ function BoardBody(props) {
 const Tbody = styled.tbody`
   width: 100%;
   height: 35px;
+  cursor: pointer;
 `;
 const Tr = styled.tr`
   width: 100%;
