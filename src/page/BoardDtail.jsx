@@ -36,7 +36,7 @@ function BoardDtail() {
           />
         </BtnBox>
       ) : null}
-      <DetailComment />
+      <DetailComment docCreateId={detailBoardData.uid} />
     </div>
   );
 }
