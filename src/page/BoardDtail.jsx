@@ -15,11 +15,9 @@ function BoardDtail() {
     delete: { btnType: "삭제하기", ref },
     update: { btnType: "수정하기", ref },
   };
-
   useEffect(() => {
     useGetDetailBoardData(ref, setDetailBoardData);
   }, []);
-
   return (
     <div>
       <DetailHeader Data={detailBoardData} key={detailBoardData.btnType} />
@@ -36,7 +34,8 @@ function BoardDtail() {
           />
         </BtnBox>
       ) : null}
-      <DetailComment />
+
+      <DetailComment docCreateId={detailBoardData.uid} />
     </div>
   );
 }
