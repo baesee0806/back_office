@@ -9,7 +9,7 @@ import CommentCreateBox from "../comment/CommentCreateBox.jsx";
 function DetailComment(props) {
   const ref = useParams();
   const [commentData, setCommentData] = useState([]);
-  const [commentCreateState, setCommentCreateState] = useState(true);
+  const [commentCreateState, setCommentCreateState] = useState(false);
 
   const CreateHandleState = () => {
     setCommentCreateState(!commentCreateState);
@@ -26,7 +26,7 @@ function DetailComment(props) {
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      temp.push(doc.data());
+      temp.push(doc);
     });
     setCommentData(temp);
   };
@@ -41,11 +41,19 @@ function DetailComment(props) {
         <CommentCreateBox
           commentData={commentData}
           getCommentData={getCommentData}
+          CreateHandleState={CreateHandleState}
         />
       )}
       {commentData &&
         commentData.map((data) => {
-          return <BoardCommentBody Data={data} key={data.id} />;
+          return (
+            <BoardCommentBody
+              Data={data.data()}
+              commentRef={data.id}
+              key={data.id}
+              getCommentData={getCommentData}
+            />
+          );
         })}
     </CommentContainer>
   );

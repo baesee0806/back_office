@@ -19,6 +19,7 @@ function CommentCreateBox(props) {
       docNumber: props.commentData.length + 1,
     });
     setComment("");
+    props.CreateHandleState();
   };
 
   return (
@@ -37,7 +38,7 @@ function CommentCreateBox(props) {
           props.getCommentData();
         }}
       >
-        댓글 추가
+        추가
       </CommentCreateBtn>
     </CommentCreateContainer>
   );
