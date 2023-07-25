@@ -4,13 +4,19 @@ import styled from "styled-components";
 function BoardCommentBody(props) {
   const userId = getAuth().currentUser.uid;
 
+  const year = props.Data.createdAt.toDate().getFullYear().toString();
+  const month = props.Data.createdAt.toDate().getMonth() + 1;
+  const date = props.Data.createdAt.toDate().getDate().toString();
+
   return (
     <>
       <CommentInfoBox>
-        <CommentWriter>작성자</CommentWriter>
-        <CommentDate>작성일</CommentDate>
+        <CommentWriter>{props.Data.userName}</CommentWriter>
+        <CommentDate>
+          {year.slice(2) + "." + month.toString() + "." + date}
+        </CommentDate>
       </CommentInfoBox>
-      <CommentBody>content</CommentBody>
+      <CommentBody>{props.Data.comment}</CommentBody>
       {userId == props.Data.userId ? (
         <CommentDeleteUpdateBox>
           <CommentDeleteBTN>삭제하기</CommentDeleteBTN>
