@@ -1,12 +1,27 @@
 import { getAuth } from "firebase/auth";
 import React, { useEffect } from "react";
 import styled from "styled-components";
+import { firestore } from "../../../apis/firebaseService";
+import {
+  doc,
+  deleteDoc,
+  query,
+  collection,
+  getDocs,
+  where,
+} from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 function BoardCommentBody(props) {
   const userId = getAuth().currentUser.uid;
-
+  const navigate = useNavigate();
   const year = props.Data.createdAt.toDate().getFullYear().toString();
   const month = props.Data.createdAt.toDate().getMonth() + 1;
   const date = props.Data.createdAt.toDate().getDate().toString();
+
+  const commentDelete = async () => {
+    await deleteDoc(doc(firestore, "comments", props.commentRef));
+    props.getCommentData();
+  };
 
   return (
     <>
@@ -19,7 +34,7 @@ function BoardCommentBody(props) {
       <CommentBody>{props.Data.comment}</CommentBody>
       {userId == props.Data.userId ? (
         <CommentDeleteUpdateBox>
-          <CommentDeleteBTN>삭제하기</CommentDeleteBTN>
+          <CommentDeleteBTN onClick={commentDelete}>삭제하기</CommentDeleteBTN>
           <CommentUpdateBTN>수정하기</CommentUpdateBTN>
         </CommentDeleteUpdateBox>
       ) : null}
