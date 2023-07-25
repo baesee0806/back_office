@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { firestore } from "../apis/firebaseService.js";
 import { getAuth } from "firebase/auth";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, onSnapshot } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import ToastUiEditor from "../components/board/create/ToastUiEditor.jsx";
 function BoardCreate() {
   const navigate = useNavigate();
+  const [data, setData] = useState([]);
+
   const [title, setTitle] = useState("");
   const [editorState, setEditorState] = useState("");
 
@@ -19,6 +21,8 @@ function BoardCreate() {
       uid: uid,
       userName: userName,
       createdAt: new Date(),
+      docNumber: data.length + 1,
+      view: 0,
     });
     navigate("/board");
   };
@@ -27,6 +31,20 @@ function BoardCreate() {
     setTitle(e.target.value);
   };
 
+  const firebaseGetBoardData = () => {
+    onSnapshot(collection(firestore, "board"), (snapshot) => {
+      const temp = [];
+
+      snapshot.forEach((doc) => {
+        temp.push(doc);
+      });
+      setData(temp);
+    });
+  };
+
+  useEffect(() => {
+    firebaseGetBoardData();
+  }, []);
   return (
     <BoardCreateContainer>
       <TitleBox>
