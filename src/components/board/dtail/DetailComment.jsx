@@ -44,6 +44,7 @@ function DetailComment(props) {
           CreateHandleState={CreateHandleState}
         />
       )}
+
       {commentData &&
         commentData.map((data) => {
           return (
