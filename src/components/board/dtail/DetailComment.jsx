@@ -5,29 +5,18 @@ import { getAuth } from "firebase/auth";
 import { firestore } from "../../../apis/firebaseService.js";
 import { useParams } from "react-router-dom";
 import { addDoc, collection, getDocs, where, query } from "firebase/firestore";
+import CommentCreateBox from "../comment/CommentCreateBox.jsx";
 function DetailComment(props) {
-  const userId = getAuth().currentUser.uid;
   const ref = useParams();
   const [commentData, setCommentData] = useState([]);
+  const [commentCreateState, setCommentCreateState] = useState(true);
 
-  const commetCreateModalStateBtn = () => {
-    props.setCommentCreateModalState(!props.commentCreateModalState);
+  const CreateHandleState = () => {
+    setCommentCreateState(!commentCreateState);
   };
-  // add comment 할수있는 새로운 공간이 필요
-  // comment를 추가 했을때 commentData를 다시 불러와야함
-  // 댓글을 달을때 모달창이 나오게 만들을까?
-  const AddCommentData = async () => {
-    const userName = getAuth().currentUser.displayName;
-    const docRef = await addDoc(collection(firestore, "comments"), {
-      userId: userId,
-      userName: userName,
-      comment: "댓글",
-      docId: ref.id,
-      createdAt: new Date(),
-      docNumber: commentData.length + 1,
-    });
-  };
+
   // 데이터를 불러오는건 여기서 하는게 맞는거 같다. 이코드는 유지
+
   const getCommentData = async () => {
     const temp = [];
     const refId = ref.id;
@@ -41,17 +30,19 @@ function DetailComment(props) {
     });
     setCommentData(temp);
   };
-
   useEffect(() => {
     getCommentData();
   }, []);
-
   return (
     <CommentContainer>
       <CommentUnerLine />
-      <CommentCreateBTN onClick={commetCreateModalStateBtn}>
-        댓글 달기
-      </CommentCreateBTN>
+      <CommentCreateBTN onClick={CreateHandleState}>댓글 달기</CommentCreateBTN>
+      {commentCreateState && (
+        <CommentCreateBox
+          commentData={commentData}
+          getCommentData={getCommentData}
+        />
+      )}
       {commentData &&
         commentData.map((data) => {
           return <BoardCommentBody Data={data} key={data.id} />;

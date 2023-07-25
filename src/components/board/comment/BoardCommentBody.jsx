@@ -1,8 +1,9 @@
 import { getAuth } from "firebase/auth";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 function BoardCommentBody(props) {
   const userId = getAuth().currentUser.uid;
+
   return (
     <>
       <CommentInfoBox>
