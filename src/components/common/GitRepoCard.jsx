@@ -1,15 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-
+import thumbnail from "../../assets/images/thumbnail.png";
 function GitRepoCard() {
   return (
     <CardLayout>
-      <div>
-        <h2>repo adress</h2>
-        <div>repo Explanation</div>
-      </div>
+      <CardTitleContainer>
+        <TitleBox>
+          <h2>repo adress</h2>
+          <div>repo Explanation</div>
+        </TitleBox>
 
-      <div>repo img</div>
+        <TitleImg src={thumbnail} />
+      </CardTitleContainer>
 
       <CardContent>
         <div>
@@ -46,12 +48,31 @@ export default React.memo(GitRepoCard);
 
 const CardLayout = styled.div`
   width: 500px;
-  height: 226px;
+  height: 250px;
 
   margin-right: 114px;
-  border: 1px solid black;
+  box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.25);
 `;
 
+const CardTitleContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 70%;
+`;
+const TitleBox = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 60%;
+`;
+
+const TitleImg = styled.img`
+  width: 30%;
+  height: 80%;
+`;
 const CardContent = styled.div`
   display: flex;
+  justify-content: space-around;
+  height: 30%;
 `;
