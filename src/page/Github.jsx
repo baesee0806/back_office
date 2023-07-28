@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import GitRepoCard from "../components/common/GitRepoCard.jsx";
 
 const Github = () => {
+  const [gitRepoData, setGitRepoData] = useState([]);
+  const myGitRepo = async () => {
+    const res = await fetch("https://api.github.com/users/baesee0806/repos");
+    const data = await res.json();
+    setGitRepoData(data);
+  };
+  console.log(gitRepoData);
+  useEffect(() => {
+    myGitRepo();
+  }, []);
   return (
     <GithubContainer>
       <GithubTitle>최근 작업중인 Repo</GithubTitle>
