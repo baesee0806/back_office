@@ -7,13 +7,12 @@ const Github = () => {
   const myGitRepo = async () => {
     const res = await fetch("https://api.github.com/users/baesee0806/repos");
     const data = await res.json();
-    setGitRepoData(data);
+    const sortData = data.sort((a, b) => {
+      return new Date(b.pushed_at) - new Date(a.pushed_at);
+    });
+    setGitRepoData(sortData);
   };
-  const today = new Date();
-  const updateAt = new Date("2023-06-08T03:26:43Z");
-  const updateDay = today - updateAt;
-  const updateDayResult = Math.floor(updateDay / (1000 * 60 * 60 * 24));
-  console.log(updateDayResult);
+
   useEffect(() => {
     myGitRepo();
   }, []);
