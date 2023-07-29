@@ -9,7 +9,11 @@ const Github = () => {
     const data = await res.json();
     setGitRepoData(data);
   };
-  console.log(gitRepoData);
+  const today = new Date();
+  const updateAt = new Date("2023-06-08T03:26:43Z");
+  const updateDay = today - updateAt;
+  const updateDayResult = Math.floor(updateDay / (1000 * 60 * 60 * 24));
+  console.log(updateDayResult);
   useEffect(() => {
     myGitRepo();
   }, []);
