@@ -12,6 +12,14 @@ const Github = () => {
     });
     setGitRepoData(sortData);
   };
+  // repo 이름 : name
+  // repo 설명 : description
+  // repo img : owner.avatar_url
+  // repo 참여자 수  : contributors_url.length
+  // repo issue 수 : open_issues_count
+  // repo star 수 : stargazers_count
+  // repo fork 수 : forks_count
+  const filterData = [gitRepoData[0], gitRepoData[1]];
 
   useEffect(() => {
     myGitRepo();
@@ -20,8 +28,7 @@ const Github = () => {
     <GithubContainer>
       <GithubTitle>최근 작업중인 Repo</GithubTitle>
       <GitRepoCardBox>
-        <GitRepoCard />
-        <GitRepoCard />
+        {filterData && filterData.map((data) => <GitRepoCard data={data} />)}
       </GitRepoCardBox>
       <GithubTitle>###님의 Git commit</GithubTitle>
       <GitCommitBox>

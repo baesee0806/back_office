@@ -1,13 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import thumbnail from "../../assets/images/thumbnail.png";
-function GitRepoCard() {
+// repo 이름 : name
+// repo 설명 : description
+// repo img : owner.avatar_url
+// repo 참여자 수  : contributors_url.length
+// repo issue 수 : open_issues_count
+// repo star 수 : stargazers_count
+// repo fork 수 : forks_count
+function GitRepoCard(props) {
+  const data = props.data;
+  const adress = data?.contributors_url;
+  console.log(adress);
+  const contributorsNum = async (adress) => {
+    const temp = [];
+    const res = await fetch(adress);
+    // const data = await res.json();
+    // temp.push(data.login);
+    console.log(adress);
+  };
+  useEffect(() => {
+    contributorsNum(adress);
+  }, []);
+  // console.log(data?.contributors_url);
   return (
     <CardLayout>
       <CardTitleContainer>
         <TitleBox>
-          <h2>repo adress</h2>
-          <div>repo Explanation</div>
+          <h2>{data?.name}</h2>
+          <div>
+            {data?.description ? data?.description : "설명이 없습니다."}
+          </div>
         </TitleBox>
 
         <TitleImg src={thumbnail} />
@@ -16,7 +39,7 @@ function GitRepoCard() {
       <CardContent>
         <div>
           <img src="" alt="" />
-          <div>num</div>
+          <div>{}</div>
           <div>Contributors</div>
         </div>
         <div>
