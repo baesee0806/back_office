@@ -11,18 +11,9 @@ import thumbnail from "../../assets/images/thumbnail.png";
 function GitRepoCard(props) {
   const data = props.data;
   const adress = data?.contributors_url;
-  console.log(adress);
-  const contributorsNum = async (adress) => {
-    const temp = [];
-    const res = await fetch(adress);
-    // const data = await res.json();
-    // temp.push(data.login);
-    console.log(adress);
-  };
-  useEffect(() => {
-    contributorsNum(adress);
-  }, []);
-  // console.log(data?.contributors_url);
+  console.log(data);
+  useEffect(() => {}, []);
+
   return (
     <CardLayout>
       <CardTitleContainer>
@@ -39,27 +30,23 @@ function GitRepoCard(props) {
       <CardContent>
         <div>
           <img src="" alt="" />
-          <div>{}</div>
+          <div>{1}</div>
           <div>Contributors</div>
         </div>
         <div>
           <img src="" alt="" />
-          <div>num</div>
+          <div>{data?.open_issues_count}</div>
           <div>Isusues</div>
         </div>
+
         <div>
           <img src="" alt="" />
-          <div>num</div>
-          <div>Discussions</div>
-        </div>
-        <div>
-          <img src="" alt="" />
-          <div>num</div>
+          <div>{data?.stargazers_count}</div>
           <div>Starts</div>
         </div>
         <div>
           <img src="" alt="" />
-          <div>num</div>
+          <div>{data?.forks_count}</div>
           <div>Forks</div>
         </div>
       </CardContent>
