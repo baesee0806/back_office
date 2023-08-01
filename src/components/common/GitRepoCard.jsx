@@ -1,13 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import thumbnail from "../../assets/images/thumbnail.png";
-function GitRepoCard() {
+import { useNavigate } from "react-router-dom";
+// repo 이름 : name
+// repo 설명 : description
+// repo img : owner.avatar_url
+// repo 참여자 수  : contributors_url.length
+// repo issue 수 : open_issues_count
+// repo star 수 : stargazers_count
+// repo fork 수 : forks_count
+function GitRepoCard(props) {
+  const navigate = useNavigate();
+  const data = props.data;
+  const contributorUrl = data?.contributors_url;
+  const gitUrl = data?.html_url;
+  const [contributorNum, setContributorNum] = useState(0);
+
+  const contributorData = async () => {
+    const res = await fetch(`${contributorUrl}`);
+    const data = await res.json();
+    setContributorNum(data.length);
+  };
+  useEffect(() => {
+    if (contributorUrl) {
+      contributorData();
+    }
+  }, [contributorUrl]);
+
   return (
-    <CardLayout>
+    <CardLayout
+      onClick={() => {
+        window.open(`${gitUrl}`);
+      }}
+    >
       <CardTitleContainer>
         <TitleBox>
-          <h2>repo adress</h2>
-          <div>repo Explanation</div>
+          <h2>{data?.name}</h2>
+          <div>
+            {data?.description ? data?.description : "설명이 없습니다."}
+          </div>
         </TitleBox>
 
         <TitleImg src={thumbnail} />
@@ -15,28 +46,24 @@ function GitRepoCard() {
 
       <CardContent>
         <div>
-          <img src="" alt="" />
-          <div>num</div>
+          <img src="" />
+          <div>{contributorNum}</div>
           <div>Contributors</div>
         </div>
         <div>
-          <img src="" alt="" />
-          <div>num</div>
+          <img src="" />
+          <div>{data?.open_issues_count}</div>
           <div>Isusues</div>
         </div>
+
         <div>
-          <img src="" alt="" />
-          <div>num</div>
-          <div>Discussions</div>
-        </div>
-        <div>
-          <img src="" alt="" />
-          <div>num</div>
+          <img src="" />
+          <div>{data?.stargazers_count}</div>
           <div>Starts</div>
         </div>
         <div>
-          <img src="" alt="" />
-          <div>num</div>
+          <img src="" />
+          <div>{data?.forks_count}</div>
           <div>Forks</div>
         </div>
       </CardContent>
@@ -50,8 +77,8 @@ const CardLayout = styled.div`
   width: 500px;
   height: 250px;
 
-  margin-right: 114px;
   box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
 `;
 
 const CardTitleContainer = styled.div`

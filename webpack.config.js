@@ -50,6 +50,7 @@ module.exports = {
       "REACT_APP_FIREBASE_STORAGE_BUCKET",
       "REACT_APP_FIREBASE_MESSAGING_SENDER_ID",
       "REACT_APP_FIREBASE_APP_ID",
+      "Github_API_KEY",
     ]),
     // 오류 원인
     // new SourceMapDevToolPlugin({
