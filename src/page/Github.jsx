@@ -42,7 +42,7 @@ export default Github;
 
 const GithubContainer = styled.div`
   width: 100%;
-  margin: auto;
+  margin: 0 auto;
 `;
 
 const GithubTitle = styled.h1`
@@ -52,7 +52,9 @@ const GithubTitle = styled.h1`
 `;
 const GitRepoCardBox = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  width: 80%;
+  margin: 0 auto;
 `;
 const GitCommitBox = styled.div`
   display: flex;
