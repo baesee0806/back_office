@@ -8,6 +8,9 @@ import {
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { firestore } from "../apis/firebaseService.js";
+import { collection, addDoc, onSnapshot } from "firebase/firestore";
+
 function SignIn() {
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
@@ -30,6 +33,14 @@ function SignIn() {
     } catch (error) {
       console.log(error);
     }
+  };
+  const userData = async () => {
+    const docRef = await addDoc(collection(firestore, "user"), {
+      name: registerName,
+      email: registerEmail,
+      admin: 0,
+      department: "",
+    });
   };
   return (
     <SignContainer>
@@ -66,7 +77,14 @@ function SignIn() {
           />
         </NameBox>
 
-        <SignButton onClick={register}>회원가입</SignButton>
+        <SignButton
+          onClick={() => {
+            register();
+            userData();
+          }}
+        >
+          회원가입
+        </SignButton>
       </SignBox>
     </SignContainer>
   );
