@@ -9,7 +9,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { firestore } from "../apis/firebaseService.js";
-import { collection, addDoc, onSnapshot } from "firebase/firestore";
+import { collection, addDoc, onSnapshot, updateDoc } from "firebase/firestore";
 
 function SignIn() {
   const [registerEmail, setRegisterEmail] = useState("");
@@ -40,6 +40,11 @@ function SignIn() {
       email: registerEmail,
       admin: 0,
       department: "",
+      userId: "",
+    }).then((docRef) => {
+      updateDoc(docRef, {
+        userId: docRef.id,
+      });
     });
   };
   return (

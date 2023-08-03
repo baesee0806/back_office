@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { firestore } from "../../apis/firebaseService.js";
-import { collection, onSnapshot, addDoc } from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 import { useNavigate, useParams } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 
@@ -20,13 +20,6 @@ function MessengerUserBox() {
       });
       setUsersData(temp);
     });
-  };
-  const firebaseAddChatRoom = async () => {
-    const docRef = await addDoc(collection(firestore, "chatroom"), {
-      users: [user.currentUser.email, ref.id],
-      messaget: [],
-    });
-    navigate(`${docRef.id}`);
   };
 
   useEffect(() => {

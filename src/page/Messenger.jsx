@@ -12,6 +12,7 @@ function Messenger() {
       </MessengerUserContainer>
       <MessengerContentContainer>
         <Routes>
+          <Route path="/" element={<div>main</div>} />
           <Route path=":id" element={<MessengerConetentBox />} />
         </Routes>
       </MessengerContentContainer>
