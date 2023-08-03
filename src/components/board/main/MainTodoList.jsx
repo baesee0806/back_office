@@ -1,83 +1,128 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { IoSend } from "react-icons/io5";
+import { firestore } from "../../../apis/firebaseService.js";
+import { getAuth } from "firebase/auth";
+import {
+  collection,
+  addDoc,
+  onSnapshot,
+  updateDoc,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 function MainTodoList() {
+  const [todoList, setTodoList] = useState([]);
+  const [todo, setTodo] = useState("");
+  // create todo
+  const authUserUid = getAuth().currentUser.uid;
+  const AddTodo = async () => {
+    const docRef = await addDoc(collection(firestore, "todo"), {
+      todo: todo,
+      uid: authUserUid,
+      createdAt: new Date(),
+      checked: false,
+    }).then((docRef) => {
+      updateDoc(docRef, {
+        docId: docRef.id,
+      });
+    });
+    setTodo("");
+    GetTodo();
+  };
+  // get todo
+  const GetTodo = async () => {
+    onSnapshot(collection(firestore, "todo"), (snapshot) => {
+      const temp = [];
+      snapshot.forEach((doc) => {
+        temp.push(doc.data());
+      });
+      setTodoList(temp);
+    });
+  };
+  useEffect(() => {
+    GetTodo();
+  }, []);
+  // todo check line-through (update)
+  const UpdateChecked = async (data) => {
+    const ref = data.docId;
+    const checkedState = data.checked;
+    const q = doc(firestore, "todo", ref);
+    const querySnapshot = await updateDoc(q, {
+      checked: !checkedState,
+    }).then(() => {
+      GetTodo();
+    });
+  };
+  // todo delete
+  const DeleteTodo = async (data) => {
+    const ref = data.docId;
+
+    const q = doc(firestore, "todo", ref);
+    const querySnapshot = await deleteDoc(q).then(() => {
+      GetTodo();
+    });
+  };
+  const DeleteLastDayTodoListData = (data) => {
+    const today = new Date();
+    const thisYear = today.getFullYear();
+    const thisMonth = today.getMonth() + 1;
+    const thisDay = today.getDate();
+
+    const createAT = new Date(data.createdAt.seconds * 1000);
+    const createYear = createAT.getFullYear();
+    const createMonth = createAT.getMonth() + 1;
+    const createDay = createAT.getDate();
+
+    if (createYear - thisYear == 0) {
+      if (createMonth - thisMonth == 0) {
+        if (createDay - thisDay == 0) {
+          return;
+        } else {
+          return DeleteTodo(data);
+        }
+      } else {
+        return DeleteTodo(data);
+      }
+    } else {
+      return DeleteTodo(data);
+    }
+  };
   return (
     <TodoListcontainer>
       <Title>To Do List</Title>
       <TodoListBox>
-        <TodoList>
-          <input type="checkbox" />
-          오늘 할일
-        </TodoList>
-        <TodoList>
-          <input type="checkbox" />
-          오늘 할일
-        </TodoList>
-        <TodoList>
-          <input type="checkbox" />
-          오늘 할일
-        </TodoList>
-        <TodoList>
-          <input type="checkbox" />
-          오늘 할일
-        </TodoList>
-        <TodoList>
-          <input type="checkbox" />
-          오늘 할일
-        </TodoList>
-        <TodoList>
-          <input type="checkbox" />
-          오늘 할일
-        </TodoList>
-        <TodoList>
-          <input type="checkbox" />
-          오늘 할일
-        </TodoList>
-        <TodoList>
-          <input type="checkbox" />
-          오늘 할일
-        </TodoList>
-        <TodoList>
-          <input type="checkbox" />
-          오늘 할일
-        </TodoList>
-        <TodoList>
-          <input type="checkbox" />
-          오늘 할일
-        </TodoList>
-        <TodoList>
-          <input type="checkbox" />
-          오늘 할일
-        </TodoList>
-        <TodoList>
-          <input type="checkbox" />
-          오늘 할일
-        </TodoList>
-        <TodoList>
-          <input type="checkbox" />
-          오늘 할일
-        </TodoList>
-        <TodoList>
-          <input type="checkbox" />
-          오늘 할일
-        </TodoList>
-        <TodoList>
-          <input type="checkbox" />
-          오늘 할일
-        </TodoList>
-        <TodoList>
-          <input type="checkbox" />
-          오늘 할일
-        </TodoList>
-        <TodoList>
-          <input type="checkbox" />
-          오늘 할일
-        </TodoList>
+        {todoList
+          .sort((a, b) => a.createdAt - b.createdAt)
+          .map((data) => {
+            DeleteLastDayTodoListData(data);
+            return (
+              <TodoList key={data.docId}>
+                <input
+                  type="checkbox"
+                  onChange={() => {
+                    UpdateChecked(data);
+                  }}
+                  checked={data.checked}
+                />
+                {data.todo}
+              </TodoList>
+            );
+          })}
       </TodoListBox>
       <AddListBox>
-        <AddListInput type="text" />
-        <AddListButton>
+        <AddListInput
+          type="text"
+          value={todo}
+          onChange={(e) => {
+            setTodo(e.target.value);
+          }}
+        />
+        <AddListButton
+          onClick={() => {
+            AddTodo();
+          }}
+        >
           <IoSend />
         </AddListButton>
       </AddListBox>

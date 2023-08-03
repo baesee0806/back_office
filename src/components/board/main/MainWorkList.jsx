@@ -1,10 +1,12 @@
+import { getAuth } from "firebase/auth";
 import React from "react";
 import styled from "styled-components";
 function MainWorkList() {
+  const auth = getAuth();
   return (
     <MainWorkListContainer>
       <MainMvpBox>
-        <MainMvpHeader>### 님의 MVP</MainMvpHeader>
+        <MainMvpHeader>{auth.currentUser.displayName} 님의 MVP</MainMvpHeader>
         <MainMvpItemBox>
           <MainMvpRank>1</MainMvpRank>
           <MainMvpItem>main 화면 뷰 그리기</MainMvpItem>
