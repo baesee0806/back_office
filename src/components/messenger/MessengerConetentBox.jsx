@@ -38,9 +38,9 @@ function MessengerConetentBox() {
       getUserMessage();
     });
 
-    const updateData = setInterval(() => {
-      getUserMessage();
-    }, 4000);
+    // const updateData = setInterval(() => {
+    //   getUserMessage();
+    // }, 4000);
   }, []);
   //
   const [message, setMessage] = useState("");
