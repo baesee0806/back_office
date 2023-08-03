@@ -51,6 +51,8 @@ const MessengerUserContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  scroll-behavior: smooth;
+  overflow-y: scroll;
 `;
 const UserBox = styled.div`
   margin-top: 16px;

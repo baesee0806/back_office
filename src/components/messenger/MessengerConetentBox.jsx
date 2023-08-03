@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { firestore } from "../../apis/firebaseService.js";
+import { RiSendPlane2Fill } from "react-icons/ri";
 import {
   addDoc,
   collection,
@@ -14,10 +15,6 @@ import {
 import { getAuth } from "firebase/auth";
 function MessengerConetentBox() {
   const scrollRef = useRef();
-  useEffect(() => {
-    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-  });
-
   const ref = useParams();
   //
   const auth = getAuth();
@@ -35,16 +32,15 @@ function MessengerConetentBox() {
     });
   };
   useEffect(() => {
+    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+
     getLoginUserData().then((data) => {
       getUserMessage();
     });
+
     const updateData = setInterval(() => {
       getUserMessage();
-      console.log(1);
-    }, 500);
-    setTimeout(() => {
-      clearInterval(updateData);
-    }, 600);
+    }, 4000);
   }, []);
   //
   const [message, setMessage] = useState("");
@@ -96,7 +92,6 @@ function MessengerConetentBox() {
           })
           .map((item) => {
             const isMyMessage = item.from === authUser[0];
-            // 데이터 최신순으로 정렬
 
             return isMyMessage ? (
               <MyMessage key={item.id}>
@@ -104,11 +99,11 @@ function MessengerConetentBox() {
                   {item.createdAt.toDate().getHours()}:
                   {item.createdAt.toDate().getMinutes()}
                 </MessafeTime>
-                <Message>{item.message}</Message>
+                <MyMessageContent>{item.message}</MyMessageContent>
               </MyMessage>
             ) : (
               <UserMessage key={item.id}>
-                <Message>{item.message}</Message>
+                <UserMessageContent>{item.message}</UserMessageContent>
                 <MessafeTime>
                   {item.createdAt.toDate().getHours()}:
                   {item.createdAt.toDate().getMinutes()}
@@ -131,7 +126,7 @@ function MessengerConetentBox() {
             sendMessage();
           }}
         >
-          전송
+          <MessageSendButton />
         </MessageButton>
       </MessageInputBox>
     </MessengerConetentBoxContainer>
@@ -190,7 +185,7 @@ const MessageButton = styled.button`
   cursor: pointer;
   background-color: white;
   &:hover {
-    border-bottom: 1px solid black;
+    color: #609aea;
     transition: 0.5s;
   }
   &:focus {
@@ -198,14 +193,33 @@ const MessageButton = styled.button`
     border: 1px solid black;
   }
 `;
-const Message = styled.p`
+const MyMessageContent = styled.p`
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 300px;
+  min-width: 50px;
+  max-width: 50%;
+  min-height: 20px;
+  max-height: 50%;
+  background-color: #609aea;
+  color: white;
   border-radius: 10px;
-  min-height: 50px;
-  border: 1px solid black;
+  padding: 5px 10px 5px 10px;
+  word-break: break-all;
+`;
+const UserMessageContent = styled.p`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 50px;
+  max-width: 50%;
+  min-height: 20px;
+  max-height: 50%;
+  border-radius: 10px;
+  background-color: #e6e6e6;
+  color: black;
+  padding: 5px 10px 5px 10px;
+  word-break: break-all;
 `;
 const MessafeTime = styled.p`
   display: flex;
@@ -213,5 +227,8 @@ const MessafeTime = styled.p`
   align-items: flex-end;
   width: 50px;
   height: 50px;
+`;
+const MessageSendButton = styled(RiSendPlane2Fill)`
+  font-size: 24px;
 `;
 export default MessengerConetentBox;
