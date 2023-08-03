@@ -23,7 +23,7 @@ function AppRouter({ isLoggedIn }) {
             <Route path="/board/create" element={<BoardCreate />} />
             <Route path="/board/:id" element={<BoardDtail />} />
             <Route path="/board/update/:id" element={<BoardUpdate />} />
-            <Route path="/messenger" element={<Messenger />} />
+            <Route path="/messenger/*" element={<Messenger />} />
           </Routes>
         </>
       ) : (
