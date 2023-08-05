@@ -92,7 +92,6 @@ function MessengerConetentBox() {
           })
           .map((item) => {
             const isMyMessage = item.from === authUser[0];
-
             return isMyMessage ? (
               <MyMessage key={item.id}>
                 <MessafeTime>
