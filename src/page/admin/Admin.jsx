@@ -18,71 +18,47 @@ function Admin() {
   useEffect(() => {
     GetUserData();
   }, []);
+  console.log(userData);
   return (
-    <AdminContainer>
-      <FEBox>
-        <Header>Front-end</Header>
-        <Hr />
-        <div>user</div>
-      </FEBox>
-      <BEBox>
-        <Header>Back-end</Header>
-        <Hr />
-      </BEBox>
-      <DesignBox>
-        <Header>Design</Header>
-        <Hr />
-      </DesignBox>
-      <PlannerBox>
-        <Header>Planner</Header>
-        <Hr />
-      </PlannerBox>
-    </AdminContainer>
+    <>
+      <AdminContainer>
+        <AdminHeadBox>
+          <AdminHead>
+            <AdminTitle>이름</AdminTitle>
+            <AdminTitle>이메일</AdminTitle>
+            <AdminTitle>부서</AdminTitle>
+            <AdminTitle>관리자</AdminTitle>
+          </AdminHead>
+        </AdminHeadBox>
+        <AdminBodyBox>
+          {userData.map((user) => (
+            <AdminBody key={user.userId}>
+              <AdminBodyItem>{user.name}</AdminBodyItem>
+              <AdminBodyItem>{user.email}</AdminBodyItem>
+              <AdminBodyItem>{user.department}</AdminBodyItem>
+              <AdminBodyItem>{user.admin}</AdminBodyItem>
+            </AdminBody>
+          ))}
+        </AdminBodyBox>
+      </AdminContainer>
+    </>
   );
 }
-const AdminContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+const AdminContainer = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
 `;
-const Header = styled.div`
-  font-size: 1.5rem;
-`;
-const Hr = styled.hr`
+const AdminHeadBox = styled.thead`
   width: 100%;
 `;
-const FEBox = styled.div`
-  width: 25%;
-  height: 90vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-right: 1px solid black;
+const AdminHead = styled.tr``;
+const AdminTitle = styled.th`
+  border: 1px solid #000;
 `;
-
-const BEBox = styled.div`
-  height: 90vh;
-  width: 25%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-right: 1px solid black;
+const AdminBodyBox = styled.tbody``;
+const AdminBody = styled.tr``;
+const AdminBodyItem = styled.td`
+  border: 1px solid #000;
 `;
-const DesignBox = styled.div`
-  height: 90vh;
-  width: 25%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-right: 1px solid black;
-`;
-
-const PlannerBox = styled.div`
-  height: 90vh;
-  width: 25%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 export default Admin;
