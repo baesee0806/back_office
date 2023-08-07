@@ -11,35 +11,38 @@ function MessengerUserBox() {
   const navigate = useNavigate();
   const ref = useParams();
 
-  // const firebaseGetUsersData = () => {
-  //   onSnapshot(collection(firestore, "user"), (snapshot) => {
-  //     const temp = [];
-
-  //     snapshot.forEach((doc) => {
-  //       temp.push(doc);
-  //     });
-  //     setUsersData(temp);
-  //   });
-  // };
-
-  useEffect(() => {
-    const queryMessages = query(collection(firestore, "user"));
-
-    const unsubscribe = onSnapshot(queryMessages, (snapshot) => {
+  const firebaseGetUsersData = () => {
+    onSnapshot(collection(firestore, "user"), (snapshot) => {
       const temp = [];
+
       snapshot.forEach((doc) => {
-        temp.push({ ...doc.data(), id: doc.id });
+        temp.push(doc);
       });
       setUsersData(temp);
     });
-    return () => {
-      unsubscribe();
-    };
+  };
+
+  useEffect(() => {
+    // const queryMessages = query(collection(firestore, "user"));
+
+    // const unsubscribe = onSnapshot(queryMessages, (snapshot) => {
+    //   const temp = [];
+    //   snapshot.forEach((doc) => {
+    //     temp.push(doc.data());
+    //   });
+    //   setUsersData(temp);
+    // });
+    // return () => {
+    //   unsubscribe();
+    // };
+    firebaseGetUsersData();
   }, []);
   return (
     <MessengerUserContainer>
       {usersData.map((item) => {
-        if (item.email === user.currentUser.email) {
+        const data = item.data();
+        console.log(item.id);
+        if (data.email === user.currentUser.email) {
           return null;
         }
         return (
@@ -49,7 +52,7 @@ function MessengerUserBox() {
               navigate(`${item.id}`);
             }}
           >
-            {item.name}
+            {data.name}
           </UserBox>
         );
       })}
