@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { IoSend } from "react-icons/io5";
-import { firestore } from "../../../apis/firebaseService.js";
+import { firestore } from "../../apis/firebaseService.js";
 import { getAuth } from "firebase/auth";
 import {
   collection,
@@ -10,6 +10,9 @@ import {
   updateDoc,
   doc,
   deleteDoc,
+  where,
+  query,
+  getDocs,
 } from "firebase/firestore";
 function MainTodoList() {
   const [todoList, setTodoList] = useState([]);
@@ -32,13 +35,16 @@ function MainTodoList() {
   };
   // get todo
   const GetTodo = async () => {
-    onSnapshot(collection(firestore, "todo"), (snapshot) => {
-      const temp = [];
-      snapshot.forEach((doc) => {
-        temp.push(doc.data());
-      });
-      setTodoList(temp);
+    const q = query(
+      collection(firestore, "todo"),
+      where("uid", "==", authUserUid)
+    );
+    const querySnapshot = await getDocs(q);
+    const temp = [];
+    querySnapshot.forEach((doc) => {
+      temp.push(doc.data());
     });
+    setTodoList(temp);
   };
   useEffect(() => {
     GetTodo();

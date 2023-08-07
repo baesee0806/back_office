@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { getAuth } from "firebase/auth";
-import DetailHeader from "../components/board/dtail/DetailHeader.jsx";
-import DetailBody from "../components/board/dtail/DetailBody.jsx";
-import DetailComment from "../components/board/dtail/DetailComment.jsx";
-import DetailBoardBTN from "../components/board/dtail/DetailBoardBTN.jsx";
-import { useGetDetailBoardData } from "../hooks/useGetDetailBoardData.js";
+import DetailHeader from "../../components/board/dtail/DetailHeader.jsx";
+import DetailBody from "../../components/board/dtail/DetailBody.jsx";
+import DetailComment from "../../components/board/dtail/DetailComment.jsx";
+import DetailBoardBTN from "../../components/board/dtail/DetailBoardBTN.jsx";
+import { useGetDetailBoardData } from "../../hooks/useGetDetailBoardData.js";
 function BoardDtail() {
   const ref = useParams();
   const userId = getAuth().currentUser.uid;

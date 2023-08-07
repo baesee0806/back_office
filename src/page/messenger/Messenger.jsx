@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import MessengerUserBox from "../components/messenger/MessengerUserBox.jsx";
-import MessengerConetentBox from "../components/messenger/MessengerConetentBox.jsx";
+import MessengerUserBox from "../../components/messenger/MessengerUserBox.jsx";
+import MessengerConetentBox from "../../components/messenger/MessengerConetentBox.jsx";
 import styled from "styled-components";
 import { Route, Routes } from "react-router-dom";
-
+import MessengerMain from "../../components/messenger/MessengerMain.jsx";
 function Messenger() {
   return (
     <MessengerContainer>
@@ -12,7 +12,7 @@ function Messenger() {
       </MessengerUserContainer>
       <MessengerContentContainer>
         <Routes>
-          <Route path="/" element={<div>main</div>} />
+          <Route path="/" element={<MessengerMain />} />
           <Route path=":id" element={<MessengerConetentBox />} />
         </Routes>
       </MessengerContentContainer>

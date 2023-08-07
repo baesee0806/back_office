@@ -61,11 +61,12 @@ function MessengerUserBox() {
 }
 const MessengerUserContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex-direction: column;
   scroll-behavior: smooth;
   overflow-y: scroll;
+  height: 100%;
 `;
 const UserBox = styled.div`
   margin-top: 16px;
