@@ -6,7 +6,6 @@
   "homepage": "https://baesee0806.github.io/back_office/",
   "scripts": {
     "start": "webpack-dev-server --mode development",
-    "prebuild": "rimraf dist",
     "build": "webpack --progress --mode production",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
