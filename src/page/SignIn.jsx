@@ -15,6 +15,7 @@ function SignIn() {
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [registerName, setRegisterName] = useState("");
+  const [department, setDepartment] = useState("");
   const navigate = useNavigate();
   const auth = getAuth();
   const register = async () => {
@@ -39,13 +40,16 @@ function SignIn() {
       name: registerName,
       email: registerEmail,
       admin: 0,
-      department: "",
+      department: department,
       userId: "",
     }).then((docRef) => {
       updateDoc(docRef, {
         userId: docRef.id,
       });
     });
+  };
+  const handleSelect = (e) => {
+    setDepartment(e.target.value);
   };
   return (
     <SignContainer>
@@ -81,9 +85,23 @@ function SignIn() {
             }}
           />
         </NameBox>
-
+        <DepartmentBox value={department} onChange={handleSelect}>
+          <option value="">부서를 선택해주세요</option>
+          <option value="FE">Front-end</option>
+          <option value="BE">Back-end</option>
+          <option value="PL">Planner</option>
+          <option value="DE">Designer</option>
+        </DepartmentBox>
         <SignButton
           onClick={() => {
+            if (
+              registerEmail == "" ||
+              registerPassword == "" ||
+              registerName == "" ||
+              department == ""
+            ) {
+              return console.log("다입력해주세요");
+            }
             register();
             userData();
           }}
@@ -187,6 +205,16 @@ const NameInput = styled.input`
     }
   }
 `;
+const DepartmentBox = styled.select`
+  width: 500px;
+  height: 60px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 2px solid #aea8f1;
+  font-size: 16px;
+  color: #aea8f1;
+`;
+
 const SignButton = styled.button`
   width: 500px;
   height: 60px;

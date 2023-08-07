@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Main from "../page/Main.jsx";
 import Messenger from "../page/Messenger.jsx";
@@ -10,7 +10,29 @@ import Github from "../page/Github.jsx";
 import BoardCreate from "../page/BoardCreate.jsx";
 import BoardDtail from "../page/BoardDtail.jsx";
 import BoardUpdate from "../page/board/BoardUpdate.jsx";
+import { collection, onSnapshot } from "firebase/firestore";
+import { firestore } from "../apis/firebaseService.js";
+import { getAuth } from "firebase/auth";
+import Admin from "../page/admin/Admin.jsx";
 function AppRouter({ isLoggedIn }) {
+  // user 컬렉션 데이터 가져오기
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const [userData, setUserData] = useState([]);
+  const GetUserData = async () => {
+    onSnapshot(collection(firestore, "user"), (snapshot) => {
+      const temp = [];
+      snapshot.forEach((doc) => {
+        if (doc.data().email === user?.email) {
+          temp.push(doc.data());
+        }
+      });
+      setUserData(temp);
+    });
+  };
+  useEffect(() => {
+    GetUserData();
+  }, []);
   return (
     <>
       {isLoggedIn ? (
@@ -24,6 +46,9 @@ function AppRouter({ isLoggedIn }) {
             <Route path="/board/:id" element={<BoardDtail />} />
             <Route path="/board/update/:id" element={<BoardUpdate />} />
             <Route path="/messenger/*" element={<Messenger />} />
+            {userData[0]?.admin == 1 ? (
+              <Route path="/admin" element={<Admin />} />
+            ) : null}
           </Routes>
         </>
       ) : (
