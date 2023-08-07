@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 import AppRouter from "./share/AppRouter.js";

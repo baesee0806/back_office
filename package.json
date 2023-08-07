@@ -1,14 +1,11 @@
 {
   "name": "backoffice",
   "version": "1.0.0",
-  "description": "### 기능",
+  "description": "",
   "main": "index.js",
-  "homepage": "https://baesee0806.github.io/back_office/",
   "scripts": {
     "start": "webpack-dev-server --mode development",
-    "build": "webpack --progress --mode production",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "build": "webpack --progress --mode production"
   },
   "keywords": [],
   "author": "",
@@ -39,12 +36,5 @@
     "webpack": "^5.86.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/baesee0806/back_office.git"
-  },
-  "bugs": {
-    "url": "https://github.com/baesee0806/back_office/issues"
   }
 }
