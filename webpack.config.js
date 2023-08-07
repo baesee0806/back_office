@@ -5,6 +5,9 @@ const webpack = require("webpack");
 const dotenv = require("dotenv");
 dotenv.config();
 module.exports = {
+  node: {
+    __dirname: true,
+  },
   entry: {
     "js/app": ["./src/App.jsx"],
   },
