@@ -23,18 +23,6 @@ function MessengerUserBox() {
   };
 
   useEffect(() => {
-    // const queryMessages = query(collection(firestore, "user"));
-
-    // const unsubscribe = onSnapshot(queryMessages, (snapshot) => {
-    //   const temp = [];
-    //   snapshot.forEach((doc) => {
-    //     temp.push(doc.data());
-    //   });
-    //   setUsersData(temp);
-    // });
-    // return () => {
-    //   unsubscribe();
-    // };
     firebaseGetUsersData();
   }, []);
   return (
