@@ -8,6 +8,7 @@ import {
   collection,
   getDocs,
   onSnapshot,
+  orderBy,
   query,
   updateDoc,
   where,
@@ -31,16 +32,32 @@ function MessengerConetentBox() {
       setAuthUser(temp);
     });
   };
+
+  const [userMessage, setUserMessage] = useState([]);
+  const roomNumber = ref.id + authUser[0];
+  const messages = userMessage.filter((item) => {
+    return item.room.includes(roomNumber);
+  });
   useEffect(() => {
-    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    // scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
 
-    getLoginUserData().then((data) => {
-      getUserMessage();
+    getLoginUserData();
+
+    const queryMessages = query(
+      collection(firestore, "messages"),
+      orderBy("createdAt")
+    );
+
+    const unsubscribe = onSnapshot(queryMessages, (snapshot) => {
+      const temp = [];
+      snapshot.forEach((doc) => {
+        temp.push({ ...doc.data() });
+      });
+      setUserMessage(temp);
     });
-
-    // const updateData = setInterval(() => {
-    //   getUserMessage();
-    // }, 4000);
+    return () => {
+      unsubscribe();
+    };
   }, []);
   //
   const [message, setMessage] = useState("");
@@ -54,63 +71,39 @@ function MessengerConetentBox() {
       to: ref.id,
       from: authUser[0],
       createdAt: new Date(),
+      room: [ref.id + authUser[0], authUser[0] + ref.id],
     }).then((data) => {
       updateDoc(data, {
         id: data.id,
       });
       setMessage("");
-      getUserMessage();
     });
-  };
-
-  //
-  const [userMessage, setUserMessage] = useState([]);
-  const getUserMessage = async () => {
-    const temp = [];
-    const q = query(collection(firestore, "messages"));
-
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      temp.push(doc.data());
-    });
-    setUserMessage(temp);
-  };
-  //
-  const keydown = (e) => {
-    if (e.key === "Enter") {
-      // sendMessage();
-      console.log("enter");
-    }
   };
 
   return (
     <MessengerConetentBoxContainer>
       <ContentBox ref={scrollRef}>
-        {userMessage
-          .sort((a, b) => {
-            return a.createdAt - b.createdAt;
-          })
-          .map((item) => {
-            const isMyMessage = item.from === authUser[0];
+        {messages.map((item) => {
+          const isMyMessage = item.from === authUser[0];
 
-            return isMyMessage ? (
-              <MyMessage key={item.id}>
-                <MessafeTime>
-                  {item.createdAt.toDate().getHours()}:
-                  {item.createdAt.toDate().getMinutes()}
-                </MessafeTime>
-                <MyMessageContent>{item.message}</MyMessageContent>
-              </MyMessage>
-            ) : (
-              <UserMessage key={item.id}>
-                <UserMessageContent>{item.message}</UserMessageContent>
-                <MessafeTime>
-                  {item.createdAt.toDate().getHours()}:
-                  {item.createdAt.toDate().getMinutes()}
-                </MessafeTime>
-              </UserMessage>
-            );
-          })}
+          return isMyMessage ? (
+            <MyMessage key={item.id}>
+              <MessafeTime>
+                {item.createdAt.toDate().getHours()}:
+                {item.createdAt.toDate().getMinutes()}
+              </MessafeTime>
+              <MyMessageContent>{item.message}</MyMessageContent>
+            </MyMessage>
+          ) : (
+            <UserMessage key={item.id}>
+              <UserMessageContent>{item.message}</UserMessageContent>
+              <MessafeTime>
+                {item.createdAt.toDate().getHours()}:
+                {item.createdAt.toDate().getMinutes()}
+              </MessafeTime>
+            </UserMessage>
+          );
+        })}
       </ContentBox>
       <MessageInputBox>
         <MessageInput
