@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { collection, onSnapshot } from "firebase/firestore";
+import { firestore } from "../../apis/firebaseService";
 function Nav() {
   const auth = getAuth();
   const user = auth.currentUser;
@@ -17,7 +19,22 @@ function Nav() {
         alert("로그아웃 실패");
       });
   };
-
+  // user 컬렉션 데이터 가져오기
+  const [userData, setUserData] = useState([]);
+  const GetUserData = async () => {
+    onSnapshot(collection(firestore, "user"), (snapshot) => {
+      const temp = [];
+      snapshot.forEach((doc) => {
+        if (doc.data().email === user.email) {
+          temp.push(doc.data());
+        }
+      });
+      setUserData(temp);
+    });
+  };
+  useEffect(() => {
+    GetUserData();
+  }, []);
   return (
     <Navbar>
       <MenuList>
@@ -36,6 +53,11 @@ function Nav() {
           <MessengerMenu to="/messenger">
             <li>메신저</li>
           </MessengerMenu>
+          {userData && userData[0]?.admin == 1 ? (
+            <AdminMenu to="/admin">
+              <li>관리자</li>
+            </AdminMenu>
+          ) : null}
           <LogoutMenu onClick={handleLogout}>
             <li>로그아웃</li>
           </LogoutMenu>
@@ -89,6 +111,12 @@ const BoardMenu = styled(Link)`
   font-family: "Noto Sans KR", sans-serif;
 `;
 const MessengerMenu = styled(Link)`
+  text-decoration: none;
+  margin-right: 30px;
+  color: #c6c8ca;
+  font-family: "Noto Sans KR", sans-serif;
+`;
+const AdminMenu = styled(Link)`
   text-decoration: none;
   margin-right: 30px;
   color: #c6c8ca;
