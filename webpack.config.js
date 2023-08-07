@@ -8,6 +8,9 @@ module.exports = {
   entry: {
     "js/app": ["./src/App.jsx"],
   },
+  performance: {
+    hints: false,
+  },
   output: {
     path: path.resolve(__dirname, "dist/"),
     publicPath: "/",
