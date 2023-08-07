@@ -8,7 +8,7 @@
     "start": "webpack-dev-server --mode development",
     "build": "webpack --progress --mode production",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +17,6 @@
     "@toast-ui/editor": "^3.2.2",
     "@toast-ui/react-editor": "^3.2.3",
     "firebase": "^10.0.0",
-    "gh-pages": "^5.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
@@ -32,6 +31,7 @@
     "css-loader": "^6.8.1",
     "dotenv": "^16.3.1",
     "file-loader": "^6.2.0",
+    "gh-pages": "^5.0.0",
     "html-webpack-plugin": "^5.5.1",
     "process": "^0.11.10",
     "rimraf": "^5.0.1",
