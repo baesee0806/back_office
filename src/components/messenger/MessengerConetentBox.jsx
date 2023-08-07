@@ -36,7 +36,9 @@ function MessengerConetentBox() {
   const [userMessage, setUserMessage] = useState([]);
   const roomNumber = ref.id + authUser[0];
   const messages = userMessage.filter((item) => {
-    return item.room.includes(roomNumber);
+    return (
+      item.room[0].includes(roomNumber) || item.room[1].includes(roomNumber)
+    );
   });
   useEffect(() => {
     // scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
