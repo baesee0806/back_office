@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import BoardHeader from "../components/board/BoardHeader.jsx";
-import BoardBody from "../components/board/BoardBody.jsx";
-import BoardCreateBTN from "../components/board/BoardCreateBTN.jsx";
-import { firestore } from "../apis/firebaseService.js";
+import BoardHeader from "../../components/board/BoardHeader.jsx";
+import BoardBody from "../../components/board/BoardBody.jsx";
+import BoardCreateBTN from "../../components/board/BoardCreateBTN.jsx";
+import { firestore } from "../../apis/firebaseService.js";
 import { collection, onSnapshot } from "firebase/firestore";
 
 function Board() {

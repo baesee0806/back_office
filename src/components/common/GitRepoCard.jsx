@@ -25,6 +25,7 @@ function GitRepoCard(props) {
     if (contributorUrl) {
       contributorData();
     }
+    console.log("1");
   }, [contributorUrl]);
 
   return (
@@ -46,23 +47,19 @@ function GitRepoCard(props) {
 
       <CardContent>
         <div>
-          <img src="" />
           <div>{contributorNum}</div>
           <div>Contributors</div>
         </div>
         <div>
-          <img src="" />
           <div>{data?.open_issues_count}</div>
           <div>Isusues</div>
         </div>
 
         <div>
-          <img src="" />
           <div>{data?.stargazers_count}</div>
           <div>Starts</div>
         </div>
         <div>
-          <img src="" />
           <div>{data?.forks_count}</div>
           <div>Forks</div>
         </div>

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { firestore } from "../apis/firebaseService.js";
+import { firestore } from "../../apis/firebaseService.js";
 import { getAuth } from "firebase/auth";
 import { collection, addDoc, onSnapshot } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import ToastUiEditor from "../components/board/create/ToastUiEditor.jsx";
+import ToastUiEditor from "../../components/board/create/ToastUiEditor.jsx";
 function BoardCreate() {
   const navigate = useNavigate();
   const [data, setData] = useState([]);

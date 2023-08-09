@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import MainTodoList from "../components/board/main/MainTodoList.jsx";
-import MainProgress from "../components/board/main/MainProgress.jsx";
-import MainWorkList from "../components/board/main/MainWorkList.jsx";
+import MainTodoList from "../../components/main/MainTodoList.jsx";
 const Main = () => {
   return (
     <MainContainer>
@@ -10,8 +8,7 @@ const Main = () => {
         <MainTodoList />
       </MainTodoListBox>
       <MainProgressBox>
-        <MainWorkList />
-        <MainProgress />
+        <div>미정 공간</div>
       </MainProgressBox>
     </MainContainer>
   );
@@ -19,6 +16,7 @@ const Main = () => {
 const MainContainer = styled.div`
   display: flex;
   justify-content: space-around;
+  min-width: 950px;
 `;
 const MainTodoListBox = styled.div`
   display: flex;

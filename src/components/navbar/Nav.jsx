@@ -5,6 +5,7 @@ import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { collection, onSnapshot } from "firebase/firestore";
 import { firestore } from "../../apis/firebaseService";
+import backOffce from "../../assets/images/back-office.png";
 function Nav() {
   const auth = getAuth();
   const user = auth.currentUser;
@@ -40,7 +41,7 @@ function Nav() {
       <MenuList>
         <LogoBox>
           <BackOfficeMenu to="/">
-            <li>{user?.displayName}님의 Back Office</li>
+            <Logo src={backOffce} />
           </BackOfficeMenu>
         </LogoBox>
         <MenuBox>
@@ -73,57 +74,79 @@ const Navbar = styled.div`
   display: flex;
   justify-content: space-around;
   border-bottom: 1px solid #c6c8ca;
-  background-color: #0c1222;
+  min-width: 950px;
 `;
 
 const MenuList = styled.ul`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   list-style: none;
 `;
 const LogoBox = styled.div`
-  display: flex;
+  width: 200px;
+  height: 50px;
+`;
+const Logo = styled.img`
+  width: 100%;
+  height: 100%;
 `;
 const MenuBox = styled.div`
   display: flex;
+  justify-content: space-between;
   margin-right: 40px;
+  width: 40%;
 `;
 const BackOfficeMenu = styled(Link)`
   width: 400px;
   text-decoration: none;
-  color: #c6c8ca;
   margin-right: 30px;
   font-family: "Noto Sans KR", sans-serif;
+  &:visited {
+    color: #000;
+  }
 `;
 
 const GithubMenu = styled(Link)`
   text-decoration: none;
   margin-right: 30px;
-  color: #c6c8ca;
   font-family: "Noto Sans KR", sans-serif;
+  &:visited {
+    color: #000;
+  }
 `;
 const BoardMenu = styled(Link)`
   text-decoration: none;
   margin-right: 30px;
-  color: #c6c8ca;
   font-family: "Noto Sans KR", sans-serif;
+  &:visited {
+    color: #000;
+  }
 `;
 const MessengerMenu = styled(Link)`
   text-decoration: none;
   margin-right: 30px;
-  color: #c6c8ca;
   font-family: "Noto Sans KR", sans-serif;
+  &:visited {
+    color: #000;
+  }
 `;
 const AdminMenu = styled(Link)`
   text-decoration: none;
   margin-right: 30px;
-  color: #c6c8ca;
+  color: #000;
   font-family: "Noto Sans KR", sans-serif;
+  &:visited {
+    color: #000;
+  }
 `;
 const LogoutMenu = styled.div`
   cursor: pointer;
-  color: #c6c8ca;
+  color: #000;
   font-family: "Noto Sans KR", sans-serif;
+  &:visited {
+    color: #000;
+  }
 `;

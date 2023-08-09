@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { IoSend } from "react-icons/io5";
-import { firestore } from "../../../apis/firebaseService.js";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { firestore } from "../../apis/firebaseService.js";
 import { getAuth } from "firebase/auth";
 import {
   collection,
@@ -10,6 +11,9 @@ import {
   updateDoc,
   doc,
   deleteDoc,
+  where,
+  query,
+  getDocs,
 } from "firebase/firestore";
 function MainTodoList() {
   const [todoList, setTodoList] = useState([]);
@@ -32,13 +36,16 @@ function MainTodoList() {
   };
   // get todo
   const GetTodo = async () => {
-    onSnapshot(collection(firestore, "todo"), (snapshot) => {
-      const temp = [];
-      snapshot.forEach((doc) => {
-        temp.push(doc.data());
-      });
-      setTodoList(temp);
+    const q = query(
+      collection(firestore, "todo"),
+      where("uid", "==", authUserUid)
+    );
+    const querySnapshot = await getDocs(q);
+    const temp = [];
+    querySnapshot.forEach((doc) => {
+      temp.push(doc.data());
     });
+    setTodoList(temp);
   };
   useEffect(() => {
     GetTodo();
@@ -106,6 +113,13 @@ function MainTodoList() {
                   checked={data.checked}
                 />
                 {data.todo}
+                <TodoListDleteButton
+                  onClick={() => {
+                    DeleteTodo(data);
+                  }}
+                >
+                  <RiDeleteBin6Line />
+                </TodoListDleteButton>
               </TodoList>
             );
           })}
@@ -130,8 +144,8 @@ function MainTodoList() {
   );
 }
 const TodoListcontainer = styled.div`
-  width: 80%;
-  height: 90%;
+  width: 85%;
+  height: 92%;
   border: 1px solid black;
   border-radius: 10px;
   display: flex;
@@ -158,7 +172,9 @@ const TodoList = styled.div`
   width: 100%;
   height: 40px !important;
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid #908888;
 `;
 const AddListBox = styled.div`
   width: 100%;
@@ -184,5 +200,15 @@ const AddListButton = styled.button`
     transition: 0.2s;
   }
 `;
-
+const TodoListDleteButton = styled.button`
+  background-color: white;
+  border: none;
+  margin-top: 2px;
+  cursor: pointer;
+  font-size: 20px;
+  &:hover {
+    color: #609aea;
+    transition: 0.2s;
+  }
+`;
 export default MainTodoList;

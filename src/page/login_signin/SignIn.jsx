@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { authService } from "../apis/firebaseService.js";
+import { authService } from "../../apis/firebaseService.js";
 import {
   createUserWithEmailAndPassword,
   updateProfile,
@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { firestore } from "../apis/firebaseService.js";
+import { firestore } from "../../apis/firebaseService.js";
 import { collection, addDoc, onSnapshot, updateDoc } from "firebase/firestore";
 
 function SignIn() {
