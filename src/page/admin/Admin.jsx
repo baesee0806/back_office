@@ -18,7 +18,6 @@ function Admin() {
   useEffect(() => {
     GetUserData();
   }, []);
-  console.log(userData);
   return (
     <>
       <AdminContainer>
