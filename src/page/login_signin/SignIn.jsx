@@ -16,6 +16,7 @@ function SignIn() {
   const [registerPassword, setRegisterPassword] = useState("");
   const [registerName, setRegisterName] = useState("");
   const [department, setDepartment] = useState("");
+  const [githubId, setGithubId] = useState("");
   const navigate = useNavigate();
   const auth = getAuth();
   const register = async () => {
@@ -42,6 +43,7 @@ function SignIn() {
       admin: 0,
       department: department,
       userId: "",
+      githubId: githubId,
     }).then((docRef) => {
       updateDoc(docRef, {
         userId: docRef.id,
@@ -85,6 +87,16 @@ function SignIn() {
             }}
           />
         </NameBox>
+        <GithubBox>
+          <GithubInput
+            type="text"
+            value={githubId}
+            placeholder="Github 아이디를 입력해주세요."
+            onChange={(e) => {
+              setGithubId(e.target.value);
+            }}
+          />
+        </GithubBox>
         <DepartmentBox value={department} onChange={handleSelect}>
           <option value="">부서를 선택해주세요</option>
           <option value="FE">Front-end</option>
@@ -190,6 +202,28 @@ const NameBox = styled.div`
 `;
 
 const NameInput = styled.input`
+  font-size: 25px;
+  width: 500px;
+  height: 60px;
+  border-radius: 5px;
+  border: 2px solid #aea8f1;
+  &::placeholder {
+    color: #c4c4c4;
+    padding-left: 20px;
+  }
+  &:focus {
+    &::placeholder {
+      color: white;
+    }
+  }
+`;
+const GithubBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+`;
+
+const GithubInput = styled.input`
   font-size: 25px;
   width: 500px;
   height: 60px;
