@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 import AppRouter from "./share/AppRouter.js";
-
+import { RecoilRoot } from "recoil";
 const App = () => {
   const auth = getAuth();
   const [init, setInit] = useState(false);
@@ -21,9 +21,11 @@ const App = () => {
   }, [isLoggedIn]);
 
   return (
-    <BrowserRouter>
-      {init ? <AppRouter isLoggedIn={isLoggedIn} /> : "Loading..."}
-    </BrowserRouter>
+    <RecoilRoot>
+      <BrowserRouter>
+        {init ? <AppRouter isLoggedIn={isLoggedIn} /> : "Loading..."}
+      </BrowserRouter>
+    </RecoilRoot>
   );
 };
 
