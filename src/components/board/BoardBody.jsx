@@ -1,36 +1,35 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { doc, updateDoc } from "firebase/firestore";
-import { firestore } from "../../apis/firebaseService";
+import { firebaseUpdateView } from "../../apis/board/board";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 
-function BoardBody(props) {
+function BoardBody({ item, view }) {
   const navigate = useNavigate();
-  const data = props.item.data();
-  const docRef = props.docRef;
-  const year = data.createdAt.toDate().getFullYear().toString();
-  const month = data.createdAt.toDate().getMonth() + 1;
-  const day = data.createdAt.toDate().getDate().toString();
+  const queryClient = useQueryClient();
+  const docRef = item.docId;
+  const year = item.createdAt.toDate().getFullYear().toString();
+  const month = item.createdAt.toDate().getMonth() + 1;
+  const day = item.createdAt.toDate().getDate().toString();
 
-  const updateData = async () => {
-    const q = doc(firestore, "board", docRef);
-    const querySnapshot = await updateDoc(q, {
-      view: data.view + 1,
-    });
-  };
+  const updateViewMutation = useMutation((item) => firebaseUpdateView(item), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("firebaseGetBoards");
+    },
+  });
   return (
     <Tbody
       onClick={() => {
+        updateViewMutation.mutate(item);
         navigate(`/board/${docRef}`);
-        updateData();
       }}
     >
       <Tr>
-        <Td>{data.docNumber}</Td>
-        <Td>{data.title}</Td>
-        <Td>{data.userName}</Td>
+        <Td>{item.docNumber}</Td>
+        <Td>{item.title}</Td>
+        <Td>{item.userName}</Td>
         <Td>{year.slice(2) + "." + month + "." + day}</Td>
-        <Td>{data.view}</Td>
+        <Td>{item.view}</Td>
       </Tr>
     </Tbody>
   );

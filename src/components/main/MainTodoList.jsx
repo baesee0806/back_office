@@ -63,30 +63,28 @@ function MainTodoList() {
     <TodoListcontainer>
       <Title>To Do List</Title>
       <TodoListBox>
-        {todoListData
-          ?.sort((a, b) => a.createdAt - b.createdAt)
-          .map((data) => {
-            DeleteLastDayTodoListData(data);
-            return (
-              <TodoList key={data.id}>
-                <input
-                  type="checkbox"
-                  onChange={() => {
-                    updateCheckedMutation.mutate(data);
-                  }}
-                  checked={data.checked}
-                />
-                {data.todo}
-                <TodoListDleteButton
-                  onClick={() => {
-                    deleteMutation.mutate(data);
-                  }}
-                >
-                  <RiDeleteBin6Line />
-                </TodoListDleteButton>
-              </TodoList>
-            );
-          })}
+        {todoListData?.map((data) => {
+          DeleteLastDayTodoListData(data);
+          return (
+            <TodoList key={data.id}>
+              <input
+                type="checkbox"
+                onChange={() => {
+                  updateCheckedMutation.mutate(data);
+                }}
+                checked={data.checked}
+              />
+              {data.todo}
+              <TodoListDleteButton
+                onClick={() => {
+                  deleteMutation.mutate(data);
+                }}
+              >
+                <RiDeleteBin6Line />
+              </TodoListDleteButton>
+            </TodoList>
+          );
+        })}
       </TodoListBox>
 
       <MainTodoListAddListBox />

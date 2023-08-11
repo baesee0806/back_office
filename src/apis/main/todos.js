@@ -33,7 +33,6 @@ export const firebaseAddTodo = async (todo) => {
     checked: false,
     createdAt: new Date(),
   }).then((docRef) => {
-    console.log(1);
     updateDoc(docRef, {
       id: docRef.id,
     });

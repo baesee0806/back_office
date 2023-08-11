@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { firestore } from "../../apis/firebaseService.js";
 import { getAuth } from "firebase/auth";
-import { collection, addDoc, onSnapshot } from "firebase/firestore";
+import { collection, addDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import ToastUiEditor from "../../components/board/create/ToastUiEditor.jsx";
 function BoardCreate() {
@@ -23,6 +23,10 @@ function BoardCreate() {
       createdAt: new Date(),
       docNumber: data.length + 1,
       view: 0,
+    }).then((docRef) => {
+      updateDoc(docRef, {
+        docId: docRef.id,
+      });
     });
     navigate("/board");
   };

@@ -5,7 +5,8 @@ import BoardBody from "../../components/board/BoardBody.jsx";
 import BoardCreateBTN from "../../components/board/BoardCreateBTN.jsx";
 import { firestore } from "../../apis/firebaseService.js";
 import { collection, onSnapshot } from "firebase/firestore";
-
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { firebaseGetBoards } from "../../apis/board/board.js";
 function Board() {
   const [data, setData] = useState([]);
 
@@ -24,13 +25,21 @@ function Board() {
     firebaseGetBoardData();
   }, []);
 
+  const { data: boardData } = useQuery({
+    queryKey: ["boardData"],
+    queryFn: firebaseGetBoards,
+  });
+
   return (
     <>
       <BoradLayout>
         <Table>
           <BoardHeader />
-          {data.map((item) => {
+          {/* {data.map((item) => {
             return <BoardBody item={item} key={item.id} docRef={item.id} />;
+          })} */}
+          {boardData?.map((item) => {
+            return <BoardBody item={item} key={item.docId} view={item.view} />;
           })}
         </Table>
       </BoradLayout>
