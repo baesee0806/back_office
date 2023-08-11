@@ -1,75 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { IoSend } from "react-icons/io5";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { firestore } from "../../apis/firebaseService.js";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getAuth } from "firebase/auth";
 import {
-  collection,
-  addDoc,
-  onSnapshot,
-  updateDoc,
-  doc,
-  deleteDoc,
-  where,
-  query,
-  getDocs,
-} from "firebase/firestore";
-function MainTodoList() {
-  const [todoList, setTodoList] = useState([]);
-  const [todo, setTodo] = useState("");
-  // create todo
-  const authUserUid = getAuth().currentUser.uid;
-  const AddTodo = async () => {
-    const docRef = await addDoc(collection(firestore, "todo"), {
-      todo: todo,
-      uid: authUserUid,
-      createdAt: new Date(),
-      checked: false,
-    }).then((docRef) => {
-      updateDoc(docRef, {
-        docId: docRef.id,
-      });
-    });
-    setTodo("");
-    GetTodo();
-  };
-  // get todo
-  const GetTodo = async () => {
-    const q = query(
-      collection(firestore, "todo"),
-      where("uid", "==", authUserUid)
-    );
-    const querySnapshot = await getDocs(q);
-    const temp = [];
-    querySnapshot.forEach((doc) => {
-      temp.push(doc.data());
-    });
-    setTodoList(temp);
-  };
-  useEffect(() => {
-    GetTodo();
-  }, []);
-  // todo check line-through (update)
-  const UpdateChecked = async (data) => {
-    const ref = data.docId;
-    const checkedState = data.checked;
-    const q = doc(firestore, "todo", ref);
-    const querySnapshot = await updateDoc(q, {
-      checked: !checkedState,
-    }).then(() => {
-      GetTodo();
-    });
-  };
-  // todo delete
-  const DeleteTodo = async (data) => {
-    const ref = data.docId;
+  firebaseGetTodos,
+  firebaseDeleteTodo,
+  firebaseCheckTodoUpdate,
+} from "../../apis/main/todos.js";
+import MainTodoListAddListBox from "./MainTodoListAddListBox.jsx";
 
-    const q = doc(firestore, "todo", ref);
-    const querySnapshot = await deleteDoc(q).then(() => {
-      GetTodo();
-    });
-  };
+function MainTodoList() {
+  const authUserUid = getAuth().currentUser.uid;
+  const queryClient = useQueryClient();
+  // get Data
+  const { data: todoListData } = useQuery({
+    queryKey: ["todoListData", authUserUid],
+    queryFn: () => firebaseGetTodos(authUserUid),
+    enabled: !!authUserUid,
+  });
+  // update checked data
+  const updateCheckedMutation = useMutation(
+    (data) => firebaseCheckTodoUpdate(data),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("todoListData");
+      },
+    }
+  );
+  // delete data
+  const deleteMutation = useMutation((data) => firebaseDeleteTodo(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("todoListData");
+    },
+  });
+
   const DeleteLastDayTodoListData = (data) => {
     const today = new Date();
     const thisYear = today.getFullYear();
@@ -80,42 +45,41 @@ function MainTodoList() {
     const createYear = createAT.getFullYear();
     const createMonth = createAT.getMonth() + 1;
     const createDay = createAT.getDate();
-
     if (createYear - thisYear == 0) {
       if (createMonth - thisMonth == 0) {
         if (createDay - thisDay == 0) {
           return;
         } else {
-          return DeleteTodo(data);
+          return deleteMutation.mutate(data);
         }
       } else {
-        return DeleteTodo(data);
+        return deleteMutation.mutate(data);
       }
     } else {
-      return DeleteTodo(data);
+      return deleteMutation.mutate(data);
     }
   };
   return (
     <TodoListcontainer>
       <Title>To Do List</Title>
       <TodoListBox>
-        {todoList
-          .sort((a, b) => a.createdAt - b.createdAt)
+        {todoListData
+          ?.sort((a, b) => a.createdAt - b.createdAt)
           .map((data) => {
             DeleteLastDayTodoListData(data);
             return (
-              <TodoList key={data.docId}>
+              <TodoList key={data.id}>
                 <input
                   type="checkbox"
                   onChange={() => {
-                    UpdateChecked(data);
+                    updateCheckedMutation.mutate(data);
                   }}
                   checked={data.checked}
                 />
                 {data.todo}
                 <TodoListDleteButton
                   onClick={() => {
-                    DeleteTodo(data);
+                    deleteMutation.mutate(data);
                   }}
                 >
                   <RiDeleteBin6Line />
@@ -124,22 +88,8 @@ function MainTodoList() {
             );
           })}
       </TodoListBox>
-      <AddListBox>
-        <AddListInput
-          type="text"
-          value={todo}
-          onChange={(e) => {
-            setTodo(e.target.value);
-          }}
-        />
-        <AddListButton
-          onClick={() => {
-            AddTodo();
-          }}
-        >
-          <IoSend />
-        </AddListButton>
-      </AddListBox>
+
+      <MainTodoListAddListBox />
     </TodoListcontainer>
   );
 }
@@ -176,30 +126,7 @@ const TodoList = styled.div`
   align-items: center;
   border-bottom: 1px solid #908888;
 `;
-const AddListBox = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-const AddListInput = styled.input`
-  width: 80%;
-  border: none;
-  border: 1px solid #908888;
-  border-radius: 5px;
-  font-size: 18px;
-`;
-const AddListButton = styled.button`
-  margin-left: -30px;
-  margin-top: 2px;
-  background-color: white;
-  border: none;
-  cursor: pointer;
-  &:hover {
-    color: #609aea;
-    transition: 0.2s;
-  }
-`;
+
 const TodoListDleteButton = styled.button`
   background-color: white;
   border: none;

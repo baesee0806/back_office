@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 import AppRouter from "./share/AppRouter.js";
-import { RecoilRoot } from "recoil";
+import { RecoilRoot, useRecoilState } from "recoil";
+import { loadingState, loginState } from "./recoil/atoms.js";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const App = () => {
   const auth = getAuth();
-  const [init, setInit] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
+  const [loading, setLoading] = useRecoilState(loadingState);
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -16,19 +18,31 @@ const App = () => {
       } else {
         setIsLoggedIn(false);
       }
-      setInit(true);
+      setLoading(true);
     });
   }, [isLoggedIn]);
 
   return (
-    <RecoilRoot>
-      <BrowserRouter>
-        {init ? <AppRouter isLoggedIn={isLoggedIn} /> : "Loading..."}
-      </BrowserRouter>
-    </RecoilRoot>
+    <BrowserRouter>
+      {loading ? <AppRouter isLoggedIn={isLoggedIn} /> : "Loading..."}
+    </BrowserRouter>
   );
 };
 
 // ReactDOM.render(<App />, document.getElementById("app"));
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      cacheTime: 1000 * 60 * 60 * 24, // 24시간
+    },
+  },
+});
 const root = ReactDOM.createRoot(document.getElementById("app"));
-root.render(<App />);
+root.render(
+  <RecoilRoot>
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
+  </RecoilRoot>
+);
