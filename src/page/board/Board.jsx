@@ -1,30 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import BoardHeader from "../../components/board/BoardHeader.jsx";
 import BoardBody from "../../components/board/BoardBody.jsx";
 import BoardCreateBTN from "../../components/board/BoardCreateBTN.jsx";
-import { firestore } from "../../apis/firebaseService.js";
-import { collection, onSnapshot } from "firebase/firestore";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { firebaseGetBoards } from "../../apis/board/board.js";
 function Board() {
-  const [data, setData] = useState([]);
-
-  const firebaseGetBoardData = () => {
-    onSnapshot(collection(firestore, "board"), (snapshot) => {
-      const temp = [];
-
-      snapshot.forEach((doc) => {
-        temp.push(doc);
-      });
-      setData(temp);
-    });
-  };
-
-  useEffect(() => {
-    firebaseGetBoardData();
-  }, []);
-
   const { data: boardData } = useQuery({
     queryKey: ["boardData"],
     queryFn: firebaseGetBoards,
@@ -35,9 +16,6 @@ function Board() {
       <BoradLayout>
         <Table>
           <BoardHeader />
-          {/* {data.map((item) => {
-            return <BoardBody item={item} key={item.id} docRef={item.id} />;
-          })} */}
           {boardData?.map((item) => {
             return <BoardBody item={item} key={item.docId} view={item.view} />;
           })}
@@ -55,6 +33,9 @@ const BoradLayout = styled.div`
 `;
 const Table = styled.table`
   width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px solid #000;
 `;
 
 export default React.memo(Board);

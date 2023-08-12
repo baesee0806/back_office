@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { firebaseUpdateView } from "../../apis/board/board";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 
-function BoardBody({ item, view }) {
+function BoardBody({ item }) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const docRef = item.docId;

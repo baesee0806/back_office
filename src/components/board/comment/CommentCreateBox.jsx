@@ -4,7 +4,8 @@ import { getAuth } from "firebase/auth";
 import { firestore } from "../../../apis/firebaseService.js";
 import { addDoc, collection } from "firebase/firestore";
 import { useParams } from "react-router-dom";
-function CommentCreateBox(props) {
+function CommentCreateBox(data) {
+  console.log(data);
   const [comment, setComment] = useState("");
   const userId = getAuth().currentUser.uid;
   const ref = useParams();
