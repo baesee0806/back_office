@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useDateChange } from "../../../hooks/useDateChange";
 
 function BoardCommentBody({ item }) {
   const year = item.createdAt.toDate().getFullYear().toString();
@@ -7,6 +8,9 @@ function BoardCommentBody({ item }) {
   const day = item.createdAt.toDate().getDate().toString();
   const hour = item.createdAt.toDate().getHours().toString();
   const min = item.createdAt.toDate().getMinutes().toString();
+  // const a = useDateChange(item.createdAt);
+  // console.log(a);
+  const deleteMutation = "";
   return (
     <CommentBodyContainer>
       <CommentUerInfoBox>

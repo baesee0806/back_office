@@ -5,6 +5,7 @@ import BoardBody from "../../components/board/BoardBody.jsx";
 import BoardCreateBTN from "../../components/board/BoardCreateBTN.jsx";
 import { useQuery } from "@tanstack/react-query";
 import { firebaseGetBoards } from "../../apis/board/board.js";
+import { useDateChange } from "../../hooks/useDateChange.js";
 function Board() {
   const { data: boardData } = useQuery({
     queryKey: ["boardData"],
