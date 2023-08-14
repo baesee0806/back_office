@@ -7,7 +7,7 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 function BoardBody({ item }) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const docRef = item.docId;
+  const docRef = item.id;
   const year = item.createdAt.toDate().getFullYear().toString();
   const month = item.createdAt.toDate().getMonth() + 1;
   const day = item.createdAt.toDate().getDate().toString();
@@ -24,12 +24,12 @@ function BoardBody({ item }) {
         navigate(`/board/${docRef}`);
       }}
     >
-      <Tr>
-        <Td>{item.docNumber}</Td>
-        <Td>{item.title}</Td>
-        <Td>{item.userName}</Td>
-        <Td>{year.slice(2) + "." + month + "." + day}</Td>
-        <Td>{item.view}</Td>
+      <Tr maxLength={15}>
+        <Num>{item.docNumber}</Num>
+        <Title>{item.title}</Title>
+        <UserName>{item.userName}</UserName>
+        <Date>{year.slice(2) + "." + month + "." + day}</Date>
+        <View>{item.view}</View>
       </Tr>
     </Tbody>
   );
@@ -43,7 +43,25 @@ const Tr = styled.tr`
   width: 100%;
   text-align: center;
 `;
-const Td = styled.td`
+
+const Num = styled.td`
   border-bottom: 1px solid #000;
+  width: 5%;
+`;
+const Title = styled.td`
+  border-bottom: 1px solid #000;
+  width: 65%;
+`;
+const UserName = styled.td`
+  border-bottom: 1px solid #000;
+  width: 10%;
+`;
+const Date = styled.td`
+  border-bottom: 1px solid #000;
+  width: 10%;
+`;
+const View = styled.td`
+  border-bottom: 1px solid #000;
+  width: 10%;
 `;
 export default React.memo(BoardBody);

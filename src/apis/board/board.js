@@ -22,7 +22,7 @@ export const firebaseGetBoards = async () => {
 
 // board page detail board Data Get
 export const firebaseDetailBoard = async (ref) => {
-  const q = query(collection(firestore, "board"), where("docId", "==", ref.id));
+  const q = query(collection(firestore, "board"), where("id", "==", ref.id));
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map((doc) => doc.data());
 };
@@ -34,6 +34,26 @@ export const firebaseUpdateView = async (item) => {
   const q = doc(firestore, "board", docRef);
   const querySnapshot = await updateDoc(q, {
     view: viewData + 1,
+  });
+};
+// board page add board Data
+export const firebaseAddBoard = async (data) => {
+  const authUserUid = getAuth().currentUser.uid;
+  const userName = getAuth().currentUser.displayName;
+
+  const q = collection(firestore, "board");
+  const docRef = await addDoc(q, {
+    title: data.title,
+    content: data.content,
+    uid: authUserUid,
+    userName: userName,
+    createdAt: new Date(),
+    view: 0,
+    // docNumber: docNumber,
+  }).then((docRef) => {
+    updateDoc(docRef, {
+      id: docRef.id,
+    });
   });
 };
 
@@ -58,15 +78,20 @@ export const firebaseDeleteComment = async (data) => {
 };
 
 // add Comment Data
-export const firebaseAddComment = async (comment) => {
+export const firebaseAddComment = async (data) => {
   const authUserUid = getAuth().currentUser.uid;
+  const userName = getAuth().currentUser.displayName;
+  const comment = data.comment;
+  const ref = data.ref;
+  const docNumber = data.docNumber;
+
   const docRef = await addDoc(collection(firestore, "comments"), {
     userId: authUserUid,
     userName: userName,
     comment: comment,
     docId: ref.id,
+    docNumber: docNumber,
     createdAt: new Date(),
-    docNumber: props.commentData.length + 1,
   }).then((docRef) => {
     updateDoc(docRef, {
       id: docRef.id,
@@ -74,17 +99,13 @@ export const firebaseAddComment = async (comment) => {
   });
 };
 
-// export const firebaseAddTodo = async (todo) => {
-//     const authUserUid = getAuth().currentUser.uid;
-
-//     const docRef = await addDoc(collection(firestore, "todo"), {
-//       uid: authUserUid,
-//       todo,
-//       checked: false,
-//       createdAt: new Date(),
-//     }).then((docRef) => {
-//       updateDoc(docRef, {
-//         id: docRef.id,
-//       });
-//     });
-//   };
+// update Comment Data
+export const firebaseUpdateComment = async (data) => {
+  const docId = data.docId;
+  const comment = data.comment;
+  const q = doc(firestore, "comments", docId);
+  const querySnapshot = await updateDoc(q, {
+    comment: comment,
+    createdAt: new Date(),
+  });
+};

@@ -1,25 +1,95 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useDateChange } from "../../../hooks/useDateChange";
+import { getAuth } from "firebase/auth";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  firebaseDeleteComment,
+  firebaseUpdateComment,
+} from "../../../apis/board/board";
 
 function BoardCommentBody({ item }) {
-  const year = item.createdAt.toDate().getFullYear().toString();
-  const month = item.createdAt.toDate().getMonth() + 1;
-  const day = item.createdAt.toDate().getDate().toString();
-  const hour = item.createdAt.toDate().getHours().toString();
-  const min = item.createdAt.toDate().getMinutes().toString();
-  // const a = useDateChange(item.createdAt);
-  // console.log(a);
-  const deleteMutation = "";
+  const [updateState, setUpdateState] = useState(false);
+  const [updateComment, setUpdateComment] = useState(item.comment);
+  const updateData = {
+    docId: item.id,
+    comment: updateComment,
+  };
+  const queryClient = useQueryClient();
+  const docUserId = item.userId;
+  const userId = getAuth().currentUser.uid;
+  const date = useDateChange(item.createdAt, 5);
+
+  const deleteMutation = useMutation(
+    (data) => {
+      firebaseDeleteComment(data);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("firebaseGetComments");
+      },
+    }
+  );
+
+  const updateMutation = useMutation(
+    (data) => {
+      firebaseUpdateComment(data);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("firebaseGetComments");
+        setUpdateComment(item.comment);
+      },
+    }
+  );
   return (
     <CommentBodyContainer>
       <CommentUerInfoBox>
         <CommentUserId>{item.userName}</CommentUserId>
-        <CommentDate>{`(${year}-${month}-${day}-${hour}:${min})`}</CommentDate>
-        <div>삭제 수정</div>
+        <CommentDate>{date}</CommentDate>
+        {userId == docUserId ? (
+          <div>
+            <Btn
+              onClick={() => {
+                deleteMutation.mutate(item);
+              }}
+            >
+              삭제
+            </Btn>
+            <Btn onClick={() => setUpdateState(!updateState)}>수정</Btn>
+          </div>
+        ) : null}
       </CommentUerInfoBox>
-      <CommentContent>{item.comment}</CommentContent>
-      <input type="text" />
+      {updateState ? (
+        <UpdateCommetContainer>
+          <UpdateCommentInput
+            type="text"
+            value={updateComment}
+            onChange={(e) => {
+              setUpdateComment(e.target.value);
+            }}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                updateMutation.mutate(updateData);
+                setUpdateState(!updateState);
+              }
+            }}
+          />
+          <UpdateBtnArea>
+            <Btn
+              onClick={() => {
+                updateMutation.mutate(updateData);
+                setUpdateState(!updateState);
+              }}
+            >
+              수정
+            </Btn>
+            <Btn onClick={() => setUpdateState(!updateState)}>취소</Btn>
+          </UpdateBtnArea>
+        </UpdateCommetContainer>
+      ) : (
+        <CommentContent>{item.comment}</CommentContent>
+      )}
     </CommentBodyContainer>
   );
 }
@@ -51,5 +121,38 @@ const CommentContent = styled.div`
   font-size: 16px;
   margin-top: 10px;
   margin-left: 10px;
+  margin-bottom: 10px;
+`;
+const UpdateCommetContainer = styled.div`
+  display: flex;
+  align-items: center;
+
+  font-size: 16px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+`;
+const UpdateCommentInput = styled.input`
+  width: 50%;
+  height: 30px;
+  border: 1px solid #c6c8ca;
+  border-radius: 5px;
+  outline: none;
+  padding-left: 10px;
+`;
+const UpdateBtnArea = styled.div`
+  margin-left: 10px;
+`;
+const Btn = styled.button`
+  width: 40px;
+  height: 30px;
+  background-color: white;
+  border: none;
+  margin-right: 10px;
+  &:hover {
+    color: #609aea;
+    transition: 0.3s;
+  }
+  cursor: pointer;
 `;
 export default BoardCommentBody;
