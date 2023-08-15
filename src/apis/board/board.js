@@ -37,6 +37,7 @@ export const firebaseUpdateView = async (item) => {
   });
 };
 // board page add board Data
+// doc number 아직....
 export const firebaseAddBoard = async (data) => {
   const authUserUid = getAuth().currentUser.uid;
   const userName = getAuth().currentUser.displayName;
@@ -54,6 +55,16 @@ export const firebaseAddBoard = async (data) => {
     updateDoc(docRef, {
       id: docRef.id,
     });
+  });
+};
+// update board Data
+
+export const firebaseUpdateBoard = async (data) => {
+  const q = doc(firestore, "board", data.docId);
+  const querySnapshot = await updateDoc(q, {
+    title: data.title,
+    content: data.content,
+    createdAt: new Date(),
   });
 };
 
