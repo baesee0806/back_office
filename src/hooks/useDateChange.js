@@ -10,7 +10,7 @@ export const useDateChange = (Date, num) => {
   const Minute = Date.toDate().getMinutes().toString();
 
   if (num === 3) {
-    return `${Year}.${Month}.${Day}`;
+    return `${Year.slice(2)}.${Month}.${Day}`;
   }
 
   if (num === 5) {

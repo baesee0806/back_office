@@ -1,20 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import { Viewer } from "@toast-ui/react-editor";
+import { useDateChange } from "../../../hooks/useDateChange";
 function DetailHeader({ data }) {
   const contents = data.content;
-  const year = data.createdAt.toDate().getFullYear().toString();
-  const month = data.createdAt.toDate().getMonth() + 1;
-  const day = data.createdAt.toDate().getDate().toString();
+  const date = useDateChange(data.createdAt, 3);
   return (
     <>
       <DetailHeaderContainer>
         <DetailHeaderUser>{data.userName}</DetailHeaderUser>
         <DetailHeaderTitle>{data.title}</DetailHeaderTitle>
         <DetailHeaderTimeViewBox>
-          <DetailHeaderTime>
-            {"작성일 : " + year.slice(2) + "." + month + "." + day}
-          </DetailHeaderTime>
+          <DetailHeaderTime>{`작성일 : ${date} `}</DetailHeaderTime>
           <DetailHeaderView>{"조회  : " + data.view}</DetailHeaderView>
         </DetailHeaderTimeViewBox>
       </DetailHeaderContainer>

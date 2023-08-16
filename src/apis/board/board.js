@@ -29,7 +29,7 @@ export const firebaseDetailBoard = async (ref) => {
 
 // board page board detail view Update
 export const firebaseUpdateView = async (item) => {
-  const docRef = item.docId;
+  const docRef = item.id;
   const viewData = item.view;
   const q = doc(firestore, "board", docRef);
   const querySnapshot = await updateDoc(q, {
@@ -50,7 +50,7 @@ export const firebaseAddBoard = async (data) => {
     userName: userName,
     createdAt: new Date(),
     view: 0,
-    // docNumber: docNumber,
+    docNumber: data.docNumber + 1,
   }).then((docRef) => {
     updateDoc(docRef, {
       id: docRef.id,

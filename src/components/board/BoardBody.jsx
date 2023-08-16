@@ -3,15 +3,13 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { firebaseUpdateView } from "../../apis/board/board";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { useDateChange } from "../../hooks/useDateChange";
 
 function BoardBody({ item }) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const docRef = item.id;
-  const year = item.createdAt.toDate().getFullYear().toString();
-  const month = item.createdAt.toDate().getMonth() + 1;
-  const day = item.createdAt.toDate().getDate().toString();
-
+  const date = useDateChange(item.createdAt, 3);
   const updateViewMutation = useMutation((item) => firebaseUpdateView(item), {
     onSuccess: () => {
       queryClient.invalidateQueries("firebaseGetBoards");
@@ -28,7 +26,7 @@ function BoardBody({ item }) {
         <Num>{item.docNumber}</Num>
         <Title>{item.title}</Title>
         <UserName>{item.userName}</UserName>
-        <Date>{year.slice(2) + "." + month + "." + day}</Date>
+        <Date>{date}</Date>
         <View>{item.view}</View>
       </Tr>
     </Tbody>
