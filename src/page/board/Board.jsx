@@ -5,24 +5,26 @@ import BoardBody from "../../components/board/BoardBody.jsx";
 import BoardCreateBTN from "../../components/board/BoardCreateBTN.jsx";
 import { useQuery } from "@tanstack/react-query";
 import { firebaseGetBoards } from "../../apis/board/board.js";
-import { boardDataNumber } from "../../recoil/atoms.js";
-import { useSetRecoilState } from "recoil";
 function Board() {
   const { data: boardData } = useQuery({
     queryKey: ["boardData"],
     queryFn: firebaseGetBoards,
-    onSuccess: (data) => {
-      setBoardDataNum(data?.length);
-    },
   });
-  const setBoardDataNum = useSetRecoilState(boardDataNumber);
+
   return (
     <>
       <BoradLayout>
         <Table>
           <BoardHeader />
-          {boardData?.map((item) => {
-            return <BoardBody item={item} key={item.id} view={item.view} />;
+          {boardData?.map((item, index) => {
+            return (
+              <BoardBody
+                index={index}
+                item={item}
+                key={item.id}
+                view={item.view}
+              />
+            );
           })}
         </Table>
       </BoradLayout>

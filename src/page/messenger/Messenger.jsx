@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import MessengerUserBox from "../../components/messenger/MessengerUserBox.jsx";
 import MessengerConetentBox from "../../components/messenger/MessengerConetentBox.jsx";
 import styled from "styled-components";

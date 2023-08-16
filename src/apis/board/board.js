@@ -37,7 +37,6 @@ export const firebaseUpdateView = async (item) => {
   });
 };
 // board page add board Data
-// doc number 아직....
 export const firebaseAddBoard = async (data) => {
   const authUserUid = getAuth().currentUser.uid;
   const userName = getAuth().currentUser.displayName;
@@ -60,12 +59,25 @@ export const firebaseAddBoard = async (data) => {
 // update board Data
 
 export const firebaseUpdateBoard = async (data) => {
-  const q = doc(firestore, "board", data.docId);
+  const q = doc(firestore, "board", data.ref);
   const querySnapshot = await updateDoc(q, {
     title: data.title,
     content: data.content,
     createdAt: new Date(),
   });
+};
+// update 할려는 글의 정보 불러오기
+
+export const firebaseGetUpdateBoard = async (ref) => {
+  const q = query(collection(firestore, "board"), where("id", "==", ref.id));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map((doc) => doc.data());
+};
+// delete board Data
+
+export const firebaseDeleteBoard = async (ref) => {
+  const q = doc(firestore, "board", ref.id);
+  const querySnapshot = await deleteDoc(q);
 };
 
 // get Comment Data
@@ -94,14 +106,14 @@ export const firebaseAddComment = async (data) => {
   const userName = getAuth().currentUser.displayName;
   const comment = data.comment;
   const ref = data.ref;
-  const docNumber = data.docNumber;
+  // const docNumber = data.docNumber;
 
   const docRef = await addDoc(collection(firestore, "comments"), {
     userId: authUserUid,
     userName: userName,
     comment: comment,
     docId: ref.id,
-    docNumber: docNumber,
+    // docNumber: docNumber,
     createdAt: new Date(),
   }).then((docRef) => {
     updateDoc(docRef, {

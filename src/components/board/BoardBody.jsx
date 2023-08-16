@@ -5,7 +5,7 @@ import { firebaseUpdateView } from "../../apis/board/board";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { useDateChange } from "../../hooks/useDateChange";
 
-function BoardBody({ item }) {
+function BoardBody({ item, index }) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const docRef = item.id;
@@ -23,7 +23,7 @@ function BoardBody({ item }) {
       }}
     >
       <Tr maxLength={15}>
-        <Num>{item.docNumber}</Num>
+        <Num>{index + 1}</Num>
         <Title>{item.title}</Title>
         <UserName>{item.userName}</UserName>
         <Date>{date}</Date>

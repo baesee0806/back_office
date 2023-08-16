@@ -4,18 +4,14 @@ import { useNavigate } from "react-router-dom";
 import ToastUiEditor from "../../components/board/create/ToastUiEditor.jsx";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { firebaseAddBoard } from "../../apis/board/board.js";
-import { useRecoilValue } from "recoil";
-import { boardDataNumber } from "../../recoil/atoms.js";
 function BoardCreate() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const boardDataNum = useRecoilValue(boardDataNumber);
   const [title, setTitle] = useState("");
   const [editorState, setEditorState] = useState("");
   const boardData = {
     title: title,
     content: editorState,
-    docNumber: boardDataNum,
   };
   const addMutation = useMutation((data) => firebaseAddBoard(data), {
     onSuccess: () => {
