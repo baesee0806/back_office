@@ -113,7 +113,6 @@ export const firebaseAddComment = async (data) => {
     userName: userName,
     comment: comment,
     docId: ref.id,
-    // docNumber: docNumber,
     createdAt: new Date(),
   }).then((docRef) => {
     updateDoc(docRef, {

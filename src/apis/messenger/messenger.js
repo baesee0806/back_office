@@ -1,15 +1,5 @@
-import { getAuth } from "firebase/auth";
 import { firestore } from "../firebaseService";
-import {
-  query,
-  collection,
-  where,
-  getDocs,
-  addDoc,
-  updateDoc,
-  doc,
-  deleteDoc,
-} from "firebase/firestore";
+import { query, collection, getDocs } from "firebase/firestore";
 
 // messenger get user list
 

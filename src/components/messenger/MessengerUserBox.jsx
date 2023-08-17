@@ -4,14 +4,23 @@ import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 import { useQuery } from "@tanstack/react-query";
 import { firebaseGetUserList } from "../../apis/messenger/messenger.js";
+import { useSetRecoilState } from "recoil";
+import { userList } from "../../recoil/atoms.js";
 
 function MessengerUserBox() {
   const user = getAuth();
   const navigate = useNavigate();
-
+  const setUserList = useSetRecoilState(userList);
   const { data: userData } = useQuery({
     queryKey: ["userData"],
     queryFn: firebaseGetUserList,
+    onSuccess: (data) => {
+      data.map((item) => {
+        if (item.email === user.currentUser.email) {
+          setUserList(item);
+        }
+      });
+    },
   });
 
   return (

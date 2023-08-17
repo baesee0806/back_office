@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import GitRepoCard from "../../components/common/GitRepoCard.jsx";
+import GitRepoCard from "../../components/github/GitRepoCard.jsx";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { firestore } from "../../apis/firebaseService.js";
 import { getAuth } from "firebase/auth";

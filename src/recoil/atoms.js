@@ -11,7 +11,7 @@ export const loginState = atom({
   default: false,
 });
 
-export const userState = atom({
-  key: "userState",
+export const userList = atom({
+  key: "userList",
   default: {},
 });
