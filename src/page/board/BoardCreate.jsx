@@ -1,50 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { firestore } from "../../apis/firebaseService.js";
-import { getAuth } from "firebase/auth";
-import { collection, addDoc, onSnapshot } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import ToastUiEditor from "../../components/board/create/ToastUiEditor.jsx";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { firebaseAddBoard } from "../../apis/board/board.js";
 function BoardCreate() {
   const navigate = useNavigate();
-  const [data, setData] = useState([]);
-
+  const queryClient = useQueryClient();
   const [title, setTitle] = useState("");
   const [editorState, setEditorState] = useState("");
-
-  const AddData = async () => {
-    const uid = getAuth().currentUser.uid;
-    const userName = getAuth().currentUser.displayName;
-    const docRef = await addDoc(collection(firestore, "board"), {
-      title: title,
-      content: editorState,
-      uid: uid,
-      userName: userName,
-      createdAt: new Date(),
-      docNumber: data.length + 1,
-      view: 0,
-    });
-    navigate("/board");
+  const boardData = {
+    title: title,
+    content: editorState,
   };
+  const addMutation = useMutation((data) => firebaseAddBoard(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("firebaseGetBoards");
+      navigate("/board");
+    },
+  });
 
-  const onChangeTitle = (e) => {
-    setTitle(e.target.value);
-  };
-
-  const firebaseGetBoardData = () => {
-    onSnapshot(collection(firestore, "board"), (snapshot) => {
-      const temp = [];
-
-      snapshot.forEach((doc) => {
-        temp.push(doc);
-      });
-      setData(temp);
-    });
-  };
-
-  useEffect(() => {
-    firebaseGetBoardData();
-  }, []);
   return (
     <BoardCreateContainer>
       <TitleBox>
@@ -53,7 +28,7 @@ function BoardCreate() {
           value={title}
           placeholder="제목을 입력해주세요."
           onChange={(e) => {
-            onChangeTitle(e);
+            setTitle(e.target.value);
           }}
         />
       </TitleBox>
@@ -64,7 +39,13 @@ function BoardCreate() {
         />
       </div>
       <CreateBTNBox>
-        <CreateBTN onClick={AddData}>작성완료</CreateBTN>
+        <CreateBTN
+          onClick={() => {
+            addMutation.mutate(boardData);
+          }}
+        >
+          작성완료
+        </CreateBTN>
         <CancelBTN>취소</CancelBTN>
       </CreateBTNBox>
     </BoardCreateContainer>

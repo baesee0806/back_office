@@ -5,26 +5,31 @@ import UpdateToastUiEditor from "../../components/board/update/UpdateToastUiEdit
 import styled from "styled-components";
 import { firestore } from "../../apis/firebaseService.js";
 import { collection, onSnapshot, doc, updateDoc } from "firebase/firestore";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  firebaseGetUpdateBoard,
+  firebaseUpdateBoard,
+} from "../../apis/board/board.js";
 function BoardUpdate() {
-  useEffect(() => {
-    getData().then((res) => {});
-  }, []);
   const navigate = useNavigate();
   const ref = useParams();
   const [editorState, setEditorState] = useState("");
   const [title, setTitle] = useState("");
-
-  const getData = async () => {
-    const q = collection(firestore, "board");
-    const querySnapshot = await onSnapshot(q, (querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        if (doc.id === ref.id) {
-          setTitle(doc.data().title);
-          setEditorState(doc.data().content);
-        }
-      });
-    });
+  const updateDatas = {
+    title: title,
+    content: editorState,
+    ref: ref.id,
   };
+  const { data: updateGetData } = useQuery({
+    queryKey: ["updateGetData"],
+    queryFn: () => firebaseGetUpdateBoard(ref),
+    onSuccess: (item) => {
+      item.map((data) => {
+        setTitle(data.title);
+        setEditorState(data.content);
+      });
+    },
+  });
   const updateData = async () => {
     const q = doc(firestore, "board", ref.id);
     const querySnapshot = await updateDoc(q, {
@@ -33,6 +38,11 @@ function BoardUpdate() {
     });
     navigate("/board");
   };
+  const updateMutation = useMutation((data) => firebaseUpdateBoard(data), {
+    onSuccess: () => {
+      navigate("/board");
+    },
+  });
   const handleChangeInput = (e) => {
     setTitle(e.target.value);
   };
@@ -50,6 +60,7 @@ function BoardUpdate() {
           />
         </UpdateTitleBox>
       )}
+
       {editorState && (
         <UpdateToastUiEditorBox>
           <UpdateToastUiEditor
@@ -59,7 +70,13 @@ function BoardUpdate() {
         </UpdateToastUiEditorBox>
       )}
       <UpdateBTNBox>
-        <UpdateBTN onClick={updateData}>수정하기</UpdateBTN>
+        <UpdateBTN
+          onClick={() => {
+            updateMutation.mutate(updateDatas);
+          }}
+        >
+          수정하기
+        </UpdateBTN>
         <CancelBTN
           onClick={() => {
             navigate("/board");

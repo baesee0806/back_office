@@ -1,26 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { getAuth } from "firebase/auth";
-import { firestore } from "../../../apis/firebaseService.js";
-import { addDoc, collection } from "firebase/firestore";
+import { IoSend } from "react-icons/io5";
 import { useParams } from "react-router-dom";
-function CommentCreateBox(props) {
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { firebaseAddComment } from "../../../apis/board/board.js";
+function CommentCreateBox({ docNumber }) {
   const [comment, setComment] = useState("");
-  const userId = getAuth().currentUser.uid;
+  const queryClient = useQueryClient();
   const ref = useParams();
-  const AddCommentData = async () => {
-    const userName = getAuth().currentUser.displayName;
-    const docRef = await addDoc(collection(firestore, "comments"), {
-      userId: userId,
-      userName: userName,
-      comment: comment,
-      docId: ref.id,
-      createdAt: new Date(),
-      docNumber: props.commentData.length + 1,
-    });
-    setComment("");
-    props.CreateHandleState();
+  const data = {
+    ref: ref,
+    comment: comment,
+    docNumber,
   };
+  const addCommentMutation = useMutation(
+    (data) => {
+      firebaseAddComment(data);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("firebaseGetComments");
+        setComment("");
+      },
+    }
+  );
 
   return (
     <CommentCreateContainer>
@@ -31,14 +34,18 @@ function CommentCreateBox(props) {
         onChange={(e) => {
           setComment(e.target.value);
         }}
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            addCommentMutation.mutate(data);
+          }
+        }}
       />
       <CommentCreateBtn
         onClick={() => {
-          AddCommentData();
-          props.getCommentData();
+          addCommentMutation.mutate(data);
         }}
       >
-        추가
+        <IoSend />
       </CommentCreateBtn>
     </CommentCreateContainer>
   );
@@ -52,14 +59,15 @@ const CommentCreateContainer = styled.div`
   margin-top: 15px;
 `;
 const CommentCreateInput = styled.input`
-  width: 90%;
+  width: 100%;
   border: none;
   border-radius: 5px;
+  outline: none;
   ::placeholder {
     padding-left: 1px;
   }
   :focus {
-    outline: none;
+    border: none;
   }
   padding-left: 20px;
   font-size: 16px;
@@ -67,15 +75,18 @@ const CommentCreateInput = styled.input`
 const CommentCreateBtn = styled.button`
   border: none;
   border-radius: 5px;
-  font-size: 18px;
+  font-size: 20px;
   cursor: pointer;
-  padding: 5px 10px;
   background-color: white;
   &:hover {
-    background-color: #0c1222;
-    color: white;
-    transition: 0.5s;
+    color: #609aea;
+    transition: 0.2s;
   }
-  width: 10%;
+  width: 50px;
+  height: 30px;
+  position: relative;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
 `;
 export default React.memo(CommentCreateBox);

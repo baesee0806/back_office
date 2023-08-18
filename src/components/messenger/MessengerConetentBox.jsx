@@ -2,39 +2,17 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { firestore } from "../../apis/firebaseService.js";
-import { RiSendPlane2Fill } from "react-icons/ri";
-import {
-  addDoc,
-  collection,
-  getDocs,
-  onSnapshot,
-  orderBy,
-  query,
-  updateDoc,
-  where,
-} from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { useRecoilValue } from "recoil";
+import { userList } from "../../recoil/atoms.js";
+import MessengerMessgeSendBox from "../messenger/MessengerMessgeSendBox.jsx";
 function MessengerConetentBox() {
   const scrollRef = useRef();
   const ref = useParams();
-  //
-  const auth = getAuth();
-  const [authUser, setAuthUser] = useState([]);
-  const getLoginUserData = async () => {
-    const temp = [];
-    onSnapshot(collection(firestore, "user"), (snapshot) => {
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        if (data.email === auth.currentUser.email) {
-          temp.push(data.userId);
-        }
-      });
-      setAuthUser(temp);
-    });
-  };
-
+  const dumyLoginUser = useRecoilValue(userList);
+  console.log(dumyLoginUser);
   const [userMessage, setUserMessage] = useState([]);
-  const roomNumber = ref.id + authUser[0];
+  const roomNumber = ref.id + dumyLoginUser.userId;
   const messages = userMessage.filter((item) => {
     return (
       item.room[0].includes(roomNumber) || item.room[1].includes(roomNumber)
@@ -42,8 +20,6 @@ function MessengerConetentBox() {
   });
   useEffect(() => {
     // scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-
-    getLoginUserData();
 
     const queryMessages = query(
       collection(firestore, "messages"),
@@ -61,32 +37,12 @@ function MessengerConetentBox() {
       unsubscribe();
     };
   }, []);
-  //
-  const [message, setMessage] = useState("");
-
-  const sendMessage = async () => {
-    if (message === "") {
-      return;
-    }
-    const docRef = await addDoc(collection(firestore, "messages"), {
-      message: message,
-      to: ref.id,
-      from: authUser[0],
-      createdAt: new Date(),
-      room: [ref.id + authUser[0], authUser[0] + ref.id],
-    }).then((data) => {
-      updateDoc(data, {
-        id: data.id,
-      });
-      setMessage("");
-    });
-  };
 
   return (
     <MessengerConetentBoxContainer>
-      <ContentBox ref={scrollRef}>
+      <ContentBox ref={scrollRef} key={ref.id}>
         {messages.map((item) => {
-          const isMyMessage = item.from === authUser[0];
+          const isMyMessage = item.from === dumyLoginUser.userId;
 
           return isMyMessage ? (
             <MyMessage key={item.id}>
@@ -107,23 +63,10 @@ function MessengerConetentBox() {
           );
         })}
       </ContentBox>
-      <MessageInputBox>
-        <MessageInput
-          type="text"
-          placeholder="메세지를 입력하세요"
-          value={message}
-          onChange={(e) => {
-            setMessage(e.target.value);
-          }}
-        />
-        <MessageButton
-          onClick={() => {
-            sendMessage();
-          }}
-        >
-          <MessageSendButton />
-        </MessageButton>
-      </MessageInputBox>
+      <MessengerMessgeSendBox
+        dumyLoginUser={dumyLoginUser}
+        key={dumyLoginUser.userId}
+      />
     </MessengerConetentBoxContainer>
   );
 }
@@ -155,39 +98,7 @@ const MyMessage = styled.div`
   margin-bottom: 10px;
   margin-right: 20px;
 `;
-const MessageInputBox = styled.div`
-  width: 100%;
-  height: 15%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const MessageInput = styled.input`
-  width: 90%;
-  height: 100%;
-  border: none;
-  border: 1px solid #e6e6e6;
-  border-radius: 10px;
-  font-size: 18px;
-  padding-left: 20px;
-`;
-const MessageButton = styled.button`
-  margin-left: -60px;
-  width: 40px;
 
-  border: none;
-  font-size: 14px;
-  cursor: pointer;
-  background-color: white;
-  &:hover {
-    color: #609aea;
-    transition: 0.5s;
-  }
-  &:focus {
-    outline: none !important;
-    border: 1px solid black;
-  }
-`;
 const MyMessageContent = styled.p`
   display: flex;
   justify-content: center;
@@ -223,7 +134,5 @@ const MessafeTime = styled.p`
   width: 50px;
   height: 50px;
 `;
-const MessageSendButton = styled(RiSendPlane2Fill)`
-  font-size: 24px;
-`;
+
 export default MessengerConetentBox;

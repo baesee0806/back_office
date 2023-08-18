@@ -1,55 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { firestore } from "../../apis/firebaseService.js";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
+import { useQuery } from "@tanstack/react-query";
+import { firebaseGetUserList } from "../../apis/messenger/messenger.js";
+import { useSetRecoilState } from "recoil";
+import { userList } from "../../recoil/atoms.js";
 
 function MessengerUserBox() {
-  const [usersData, setUsersData] = useState([]);
   const user = getAuth();
   const navigate = useNavigate();
-  const ref = useParams();
-
-  const firebaseGetUsersData = () => {
-    onSnapshot(collection(firestore, "user"), (snapshot) => {
-      const temp = [];
-
-      snapshot.forEach((doc) => {
-        temp.push(doc);
+  const setUserList = useSetRecoilState(userList);
+  const { data: userData } = useQuery({
+    queryKey: ["userData"],
+    queryFn: firebaseGetUserList,
+    onSuccess: (data) => {
+      data.map((item) => {
+        if (item.email === user.currentUser.email) {
+          setUserList(item);
+        }
       });
-      setUsersData(temp);
-    });
-  };
+    },
+  });
 
-  useEffect(() => {
-    // const queryMessages = query(collection(firestore, "user"));
-
-    // const unsubscribe = onSnapshot(queryMessages, (snapshot) => {
-    //   const temp = [];
-    //   snapshot.forEach((doc) => {
-    //     temp.push(doc.data());
-    //   });
-    //   setUsersData(temp);
-    // });
-    // return () => {
-    //   unsubscribe();
-    // };
-    firebaseGetUsersData();
-  }, []);
   return (
     <MessengerUserContainer>
-      {usersData.map((item) => {
-        const data = item.data();
-        console.log(item.id);
+      {userData?.map((data) => {
         if (data.email === user.currentUser.email) {
           return null;
         }
         return (
           <UserBox
-            key={item.id}
+            key={data.userId}
             onClick={() => {
-              navigate(`${item.id}`);
+              navigate(`${data.userId}`);
             }}
           >
             {data.name}

@@ -1,36 +1,33 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { doc, updateDoc } from "firebase/firestore";
-import { firestore } from "../../apis/firebaseService";
+import { firebaseUpdateView } from "../../apis/board/board";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { useDateChange } from "../../hooks/useDateChange";
 
-function BoardBody(props) {
+function BoardBody({ item, index }) {
   const navigate = useNavigate();
-  const data = props.item.data();
-  const docRef = props.docRef;
-  const year = data.createdAt.toDate().getFullYear().toString();
-  const month = data.createdAt.toDate().getMonth() + 1;
-  const day = data.createdAt.toDate().getDate().toString();
-
-  const updateData = async () => {
-    const q = doc(firestore, "board", docRef);
-    const querySnapshot = await updateDoc(q, {
-      view: data.view + 1,
-    });
-  };
+  const queryClient = useQueryClient();
+  const docRef = item.id;
+  const date = useDateChange(item.createdAt, 3);
+  const updateViewMutation = useMutation((item) => firebaseUpdateView(item), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("firebaseGetBoards");
+    },
+  });
   return (
     <Tbody
       onClick={() => {
+        updateViewMutation.mutate(item);
         navigate(`/board/${docRef}`);
-        updateData();
       }}
     >
-      <Tr>
-        <Td>{data.docNumber}</Td>
-        <Td>{data.title}</Td>
-        <Td>{data.userName}</Td>
-        <Td>{year.slice(2) + "." + month + "." + day}</Td>
-        <Td>{data.view}</Td>
+      <Tr maxLength={15}>
+        <Num>{index + 1}</Num>
+        <Title>{item.title}</Title>
+        <UserName>{item.userName}</UserName>
+        <Date>{date}</Date>
+        <View>{item.view}</View>
       </Tr>
     </Tbody>
   );
@@ -44,7 +41,25 @@ const Tr = styled.tr`
   width: 100%;
   text-align: center;
 `;
-const Td = styled.td`
+
+const Num = styled.td`
   border-bottom: 1px solid #000;
+  width: 5%;
+`;
+const Title = styled.td`
+  border-bottom: 1px solid #000;
+  width: 65%;
+`;
+const UserName = styled.td`
+  border-bottom: 1px solid #000;
+  width: 10%;
+`;
+const Date = styled.td`
+  border-bottom: 1px solid #000;
+  width: 10%;
+`;
+const View = styled.td`
+  border-bottom: 1px solid #000;
+  width: 10%;
 `;
 export default React.memo(BoardBody);
