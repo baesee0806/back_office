@@ -20,7 +20,6 @@ function GitRepoCard({ data }) {
       return data.length;
     },
   });
-
   return (
     <CardLayout
       onClick={() => {
