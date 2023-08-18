@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import thumbnail from "../../assets/images/thumbnail.png";
-import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 // repo 이름 : name
 // repo 설명 : description
 // repo img : owner.avatar_url
@@ -9,24 +9,17 @@ import { useNavigate } from "react-router-dom";
 // repo issue 수 : open_issues_count
 // repo star 수 : stargazers_count
 // repo fork 수 : forks_count
-function GitRepoCard(props) {
-  const navigate = useNavigate();
-  const data = props.data;
+function GitRepoCard({ data }) {
   const contributorUrl = data?.contributors_url;
   const gitUrl = data?.html_url;
-  const [contributorNum, setContributorNum] = useState(0);
-
-  const contributorData = async () => {
-    const res = await fetch(`${contributorUrl}`);
-    const data = await res.json();
-    setContributorNum(data.length);
-  };
-  useEffect(() => {
-    if (contributorUrl) {
-      contributorData();
-    }
-    console.log("1");
-  }, [contributorUrl]);
+  const { data: contributorData } = useQuery({
+    queryKey: ["contributorDataa"],
+    queryFn: async () => {
+      const res = await fetch(`${contributorUrl}`);
+      const data = await res.json();
+      return data.length;
+    },
+  });
 
   return (
     <CardLayout
@@ -47,7 +40,7 @@ function GitRepoCard(props) {
 
       <CardContent>
         <div>
-          <div>{contributorNum}</div>
+          <div>{contributorData}</div>
           <div>Contributors</div>
         </div>
         <div>
