@@ -74,7 +74,7 @@ const Navbar = styled.div`
   display: flex;
   justify-content: space-around;
   border-bottom: 1px solid #c6c8ca;
-  min-width: 950px;
+  min-width: 1032px;
 `;
 
 const MenuList = styled.ul`
