@@ -6,7 +6,7 @@
 
 - back office는 개발자들이 개발을 하면서 필요한 기능들을 제공하는 웹 사이트입니다.
 - 오늘의 할일, 게시판, 실시간 메신저 기능을 제공합니다.
-- 개발자들의 git repository중 가장 최근에 push한 repository를 보여줍니다.
+- 개발자들의 git repository중 가장 최근에 push한 2개의 repository를 보여줍니다.
   <br/>
   <br/>
   <br/>
