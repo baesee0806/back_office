@@ -16,7 +16,19 @@ export const firebaseGetUserData = async () => {
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map((doc) => doc.data());
 };
-
+export const firebaseGetAuthUserData = async () => {
+  const auth = getAuth();
+  const email = auth.currentUser.email;
+  const temp = [];
+  const q = query(collection(firestore, "user"));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.docs.map((doc) => {
+    if (doc.data().email === email) {
+      temp.push(doc.data());
+    }
+  });
+  return temp;
+};
 export const firebaseUpdateUserData = async (updateData) => {
   const auth = getAuth();
 

@@ -102,7 +102,7 @@ const TableBody = styled.tbody`
 `;
 const TableBodyRow = styled.tr`
   width: 100%;
-  height: 50px;
+  height: 50px !important;
   cursor: pointer;
 `;
 const TableBodyName = styled.td`
