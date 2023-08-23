@@ -18,9 +18,8 @@ function MessengerConetentBox() {
       item.room[0].includes(roomNumber) || item.room[1].includes(roomNumber)
     );
   });
+  // scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   useEffect(() => {
-    // scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-
     const queryMessages = query(
       collection(firestore, "messages"),
       orderBy("createdAt")

@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { collection, onSnapshot } from "firebase/firestore";
 import { firestore } from "../../apis/firebaseService";
 import backOffce from "../../assets/images/back-office.png";
+import { useQuery } from "@tanstack/react-query";
+import { firebaseGetAuthUserData } from "../../apis/admin/users/users";
 function Nav() {
   const auth = getAuth();
   const user = auth.currentUser;
@@ -21,21 +23,11 @@ function Nav() {
       });
   };
   // user 컬렉션 데이터 가져오기
-  const [userData, setUserData] = useState([]);
-  const GetUserData = async () => {
-    onSnapshot(collection(firestore, "user"), (snapshot) => {
-      const temp = [];
-      snapshot.forEach((doc) => {
-        if (doc.data().email === user.email) {
-          temp.push(doc.data());
-        }
-      });
-      setUserData(temp);
-    });
-  };
-  useEffect(() => {
-    GetUserData();
-  }, []);
+
+  const { data: userDetailData } = useQuery({
+    queryKey: ["userDetailData"],
+    queryFn: firebaseGetAuthUserData,
+  });
   return (
     <Navbar>
       <MenuList>
@@ -54,11 +46,14 @@ function Nav() {
           <MessengerMenu to="/messenger">
             <li>메신저</li>
           </MessengerMenu>
-          {userData && userData[0]?.admin == 1 ? (
-            <AdminMenu to="/admin">
-              <li>관리자</li>
-            </AdminMenu>
-          ) : null}
+          {userDetailData &&
+            userDetailData.map((el) => {
+              return (
+                <AdminMenu to="/admin" key={el.userId}>
+                  <li>관리자</li>
+                </AdminMenu>
+              );
+            })}
           <LogoutMenu onClick={handleLogout}>
             <li>로그아웃</li>
           </LogoutMenu>
