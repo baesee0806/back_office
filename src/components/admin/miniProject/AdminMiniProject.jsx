@@ -2,29 +2,24 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import styled from "styled-components";
 import { firebaseMiniProjectData } from "../../../apis/admin/miniProject/miniProject.js";
+import ProjectRecommendationCard from "../../main/recommendation/ProjectRecommendationCard.jsx";
+import AdminRecommendationCard from "./AdminRecommendationCard.jsx";
+import AdminCreateProjectCard from "./AdminCreateProjectCard.jsx";
 
 function AdminMiniProject() {
   const { data: miniProjectData } = useQuery({
     queryKey: ["miniProjectData"],
     queryFn: firebaseMiniProjectData,
   });
-  console.log(miniProjectData);
   return (
     <AdminMiniProjectContainer>
       <AdminMiniProjectContentBox>
         {miniProjectData?.map((data) => {
-          return (
-            <div key={data.id}>
-              <div>{data.name}</div>
-              <div>{data.explain}</div>
-              <div>{data.id}</div>
-              <div>{data.tech}</div>
-            </div>
-          );
+          return <AdminRecommendationCard key={data.id} data={data} />;
         })}
       </AdminMiniProjectContentBox>
 
-      <div>miniProject Cud</div>
+      <AdminCreateProjectCard />
     </AdminMiniProjectContainer>
   );
 }
@@ -36,5 +31,6 @@ const AdminMiniProjectContentBox = styled.div`
   width: 50%;
   display: flex;
   flex-direction: column;
+  scroll-behavior: smooth;
 `;
 export default AdminMiniProject;

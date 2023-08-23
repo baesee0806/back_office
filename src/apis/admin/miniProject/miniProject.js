@@ -18,10 +18,16 @@ export const firebaseMiniProjectData = async () => {
   return querySnapshot.docs.map((doc) => doc.data());
 };
 
-export const firebaseGetBoards = async () => {
-  const q = query(collection(firestore, "board"));
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.docs
-    .map((doc) => doc.data())
-    .sort((a, b) => a.createdAt - b.createdAt);
+export const firebaseMiniProjectAddData = async (data) => {
+  const q = collection(firestore, "miniProject");
+  const docRef = await addDoc(q, data).then((docRef) => {
+    updateDoc(docRef, {
+      id: docRef.id,
+    });
+  });
+};
+
+export const firebaseMiniProjectDeleteData = async (docId) => {
+  const q = doc(firestore, "miniProject", docId);
+  const querySnapshot = await deleteDoc(q);
 };
