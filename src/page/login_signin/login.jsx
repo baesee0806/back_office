@@ -4,6 +4,8 @@ import { authService } from "../../apis/firebaseService.js";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { firebaseGetUserData } from "../../apis/admin/users/users.js";
+import { useQuery } from "@tanstack/react-query";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,6 +18,19 @@ function Login() {
         setPassword("");
       })
       .catch((err) => {});
+  };
+  const { data: userData } = useQuery({
+    queryKey: ["userData"],
+    queryFn: firebaseGetUserData,
+  });
+  const handleLogin = () => {
+    userData?.map((user) => {
+      if (user.email === email) {
+        handleSubmit();
+      } else {
+        return;
+      }
+    });
   };
   return (
     <LoginContainer>
@@ -46,7 +61,7 @@ function Login() {
           <PasswordFind>비밀번호 찾기</PasswordFind>
         </EmailPasswordfindBox>
 
-        <LoginButton onClick={handleSubmit}>로그인</LoginButton>
+        <LoginButton onClick={handleLogin}>로그인</LoginButton>
         <SignupButton
           onClick={() => {
             navigate("/signin");
