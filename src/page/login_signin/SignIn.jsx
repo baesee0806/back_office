@@ -145,6 +145,7 @@ const SignBox = styled.div`
 
 const LoginTitle = styled.div`
   font-size: 30px;
+  margin-top: 20px;
   margin-bottom: 40px;
   font-weight: bold;
   color: #191f28;

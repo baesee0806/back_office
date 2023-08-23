@@ -26,6 +26,7 @@ function AdminMiniProject() {
 const AdminMiniProjectContainer = styled.div`
   display: flex;
   width: 100%;
+  min-width: 1032px;
 `;
 const AdminMiniProjectContentBox = styled.div`
   width: 50%;

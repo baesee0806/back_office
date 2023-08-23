@@ -5,8 +5,9 @@
 개발자들의 back office
 
 - back office는 개발자들이 개발을 하면서 필요한 기능들을 제공하는 웹 사이트입니다.
-- 오늘의 할일, 게시판, 실시간 메신저 기능을 제공합니다.
+- 오늘의 개발할 미니 프로젝트 추천 ,할일, 게시판, 실시간 메신저 기능을 제공합니다.
 - 개발자들의 git repository중 가장 최근에 push한 2개의 repository를 보여줍니다.
+
   <br/>
   <br/>
   <br/>
@@ -45,7 +46,6 @@
 
 ### 깃허브 페이지
 
-- 유저의 github star card, most used language card
 - 최근 commit한 2개의 repository card
 - 유저의 commit history chart
 
@@ -59,9 +59,9 @@
 
 ### Admin 페이지
 
-- firestore를 이용한 유저 관리 구현 (진행)
-- 유저의 권한 변경, 삭제, 추가 구현 (진행)
-- 메인 페이지 미니 프로젝트 주제 추가, 삭제 구현 (진행)
+- firestore를 이용한 유저 관리 구현
+- 유저의 권한 변경, 삭제, 추가 구현
+- 메인 페이지 미니 프로젝트 주제 추가, 삭제 구현
   <br/>
   <br/>
   <br/>
