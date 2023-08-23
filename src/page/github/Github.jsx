@@ -20,7 +20,6 @@ const Github = () => {
       return await fetchGithubData(id);
     },
   });
-  console.log(githubId);
   return (
     <GithubContainer>
       <GithubTitle>최근 작업중인 Repo</GithubTitle>

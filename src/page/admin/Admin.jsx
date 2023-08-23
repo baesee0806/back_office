@@ -1,63 +1,50 @@
-import React, { useEffect, useState } from "react";
-import { getAuth } from "firebase/auth";
-import { collection, onSnapshot } from "firebase/firestore";
-import { firestore } from "../../apis/firebaseService";
+import React from "react";
 import styled from "styled-components";
+import AdminUserTable from "../../components/admin/user/AdminUserTable.jsx";
+import AdminMiniProject from "../../components/admin/miniProject/AdminMiniProject.jsx";
+import { Routes, Route, Link } from "react-router-dom";
 function Admin() {
-  const auth = getAuth();
-  const [userData, setUserData] = useState([]);
-  const GetUserData = async () => {
-    onSnapshot(collection(firestore, "user"), (snapshot) => {
-      const temp = [];
-      snapshot.forEach((doc) => {
-        temp.push(doc.data());
-      });
-      setUserData(temp);
-    });
-  };
-  useEffect(() => {
-    GetUserData();
-  }, []);
   return (
-    <>
-      <AdminContainer>
-        <AdminHeadBox>
-          <AdminHead>
-            <AdminTitle>이름</AdminTitle>
-            <AdminTitle>이메일</AdminTitle>
-            <AdminTitle>부서</AdminTitle>
-            <AdminTitle>관리자</AdminTitle>
-          </AdminHead>
-        </AdminHeadBox>
-        <AdminBodyBox>
-          {userData.map((user) => (
-            <AdminBody key={user.userId}>
-              <AdminBodyItem>{user.name}</AdminBodyItem>
-              <AdminBodyItem>{user.email}</AdminBodyItem>
-              <AdminBodyItem>{user.department}</AdminBodyItem>
-              <AdminBodyItem>{user.admin}</AdminBodyItem>
-            </AdminBody>
-          ))}
-        </AdminBodyBox>
-      </AdminContainer>
-    </>
+    <AdminContainer>
+      <AdminMenuBox>
+        <AdminUserMenu to="/admin">User</AdminUserMenu>
+        <AdminProjectMenu to="/admin/Project">Mini Project</AdminProjectMenu>
+      </AdminMenuBox>
+      <Routes>
+        <Route path="/" element={<AdminUserTable />} />
+        <Route path="Project" element={<AdminMiniProject />} />
+      </Routes>
+    </AdminContainer>
   );
 }
-const AdminContainer = styled.table`
+const AdminContainer = styled.div`
   width: 100%;
-  border-collapse: collapse;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
 `;
-const AdminHeadBox = styled.thead`
-  width: 100%;
+const AdminMenuBox = styled.div`
+  width: 30%;
+  height: 60px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 `;
-const AdminHead = styled.tr``;
-const AdminTitle = styled.th`
-  border: 1px solid #000;
+const AdminUserMenu = styled(Link)`
+  width: 40px;
+  text-decoration: none;
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: bold;
+  &:visited {
+    color: #000;
+  }
 `;
-const AdminBodyBox = styled.tbody``;
-const AdminBody = styled.tr``;
-const AdminBodyItem = styled.td`
-  border: 1px solid #000;
+const AdminProjectMenu = styled(Link)`
+  width: 150px;
+  text-decoration: none;
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: bold;
+  &:visited {
+    color: #000;
+  }
 `;
 export default Admin;
